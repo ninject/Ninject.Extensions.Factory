@@ -1,0 +1,1 @@
+﻿C:\Projects\Ninject\ninject.extensions.factory\lib\Ninject\net-4.0\Ninject.dll

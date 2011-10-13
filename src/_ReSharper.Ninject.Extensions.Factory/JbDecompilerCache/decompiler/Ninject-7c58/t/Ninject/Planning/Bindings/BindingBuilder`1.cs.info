@@ -1,0 +1,8 @@
+﻿Code version: 6.0.2202.688
+Assembly name Ninject, Version=2.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7 mvid {fd2c75f4-ae87-4b21-a63b-1c9e5fdb673f}
+* ref mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  mvid {fcb9dac8-ae3a-4886-93b0-f4cd5b0db0be}
+* ref System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  mvid {c08d55d3-6463-439d-b112-60f6502ec141}
+* ref System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  mvid {0467f5c0-e463-4b2c-acc5-f718cb71f056}

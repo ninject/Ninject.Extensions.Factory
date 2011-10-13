@@ -1,0 +1,592 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="NinjectIncludes">
+
+	<property name="teamcity" value="false" overwrite="false"/>
+	<property name="path.base" value="${project::get-base-directory()}"/>
+	<property name="path.build" value="${path.base}/build" dynamic="true"/>
+	<property name="path.lib" value="${path.base}/lib" dynamic="true"/>
+	<property name="path.dist" value="${path.base}/dist" dynamic="true"/>
+	<property name="path.docs" value="${path.base}/docs" dynamic="true"/>
+	<property name="path.src" value="${path.base}/src" dynamic="true"/>
+	<property name="path.build.assemblyinfo" value="${path.src}/${build.asminfo}" dynamic="true"/>
+	<property name="path.tools" value="${path.base}/tools" dynamic="true"/>
+	<property name="path.tools.xunit.sl" value="${path.tools}/xunit.sl/" dynamic="true"/>
+	<property name="path.tools.xunit" value="${path.tools}/xunit.net" dynamic="true"/>
+	<property name="path.tools.xunit.console" value="${path.tools.xunit}/xunit.console.exe" dynamic="true"/>
+	<property name="path.tools.moq" value="${path.tools}/moq" dynamic="true"/>
+	<property name="path.tools.ncover" value="${path.tools}/ncover" dynamic="true"/>
+	<property name="path.tools.git" value="${path.tools}/git" dynamic="true"/>
+	<property name="path.tools.statlight" value="${path.tools}/statlight/statlight.exe" dynamic="true"/>
+	<property name="path.tools.nuget" value="${path.tools}/nuget/nuget.exe" dynamic="true"/>
+	<property name="path.tools.fluentassertions" value="${path.tools}/fluentassertions" dynamic="true"/>
+
+	<property name="product.keyfile" value="Ninject.snk" overwrite="false"/>
+	<property name="product.docfile" value="${product.name}.xml" overwrite="false"/>
+	<property name="product.assembly" value="${product.name}.dll" overwrite="false"/>
+	<property name="product.assembly.test" value="${product.name}.Test.dll" overwrite="false"/>
+	<property name="product.assembly.silverlighttest" value="${product.name}.SilverlightTests.xap" overwrite="false"/>
+	<property name="product.assembly.silverlighttestdll" value="${product.name}.SilverlightTests.dll" overwrite="false"/>
+	<property name="product.additionalVersionTag" value="" overwrite="false"/>
+	<property name="product.clsCompliant" value="true" overwrite="false"/>
+	<property name="product.packagePostfix" value="" overwrite="false"/>
+	
+	<property name="version.major" value="${version::get-major(version::parse(version))}" dynamic="true"/>
+	<property name="version.minor" value="${version::get-minor(version::parse(version))}" dynamic="true"/>
+	<property name="version.build" value="${version::get-build(version::parse(version))}" dynamic="true"/>
+	<property name="version.revision" value="${version::get-revision(version::parse(version))}" dynamic="true"/>
+	<property name="build.version" value="${version.major}.${version.minor}.${version.build}.${version.revision}" dynamic="true"/>
+	<property name="build.assemblyversion" value="${version.major}.${version.minor}.0.0" dynamic="true"/>
+	<property name="build.config" value="debug" overwrite="false"/>
+	<property name="build.platform" value="net-3.5" overwrite="false"/>
+	<property name="build.asminfo" value="SharedAssemblyInfo.cs"/>
+
+	<property name="package" value="false" readonly="false" overwrite="false"/>
+	<property name="skip.tests" value="false" readonly="false" overwrite="false"/>
+	<property name="skip.silverlightTests" value="false" readonly="false" overwrite="false"/>
+
+	<property name="Is64BitOperatingSystem" value="false" />
+	<property name="Is64BitProcess" value="false" />
+	<property name="IsWow64Process" value="false" />
+	
+	<target name="DetectOperatingSystemArchitecture" depends="DetectIfWow64Process,DetectIf64BitProcess">
+		<description>
+			This will detect whether the current Operating System is running as a 32-bit or 64-bit Operating System regardless of whether this is a 32-bit or 64-bit process.
+		</description>
+		<property name="Is64BitOperatingSystem" value="${IsWow64Process or Is64BitProcess}" />
+		<if test="${Is64BitOperatingSystem}">
+			<echo message="The operating system you are running is 64-bit." />
+		</if>
+		<if test="${not Is64BitOperatingSystem}">
+			<echo message="The operating system you are running is 32-bit." />
+		</if>
+	</target>
+	
+	<script language="C#" prefix="PInvoke">
+		<references>
+			<include name="System.dll" />
+		</references>
+		<imports>
+			<import namespace="System.Diagnostics" />
+			<import namespace="System.Runtime.InteropServices" />
+		</imports>
+		<code>
+			<![CDATA[
+				[DllImport("kernel32.dll")]
+				public static extern bool IsWow64Process(System.IntPtr hProcess, out bool lpSystemInfo);
+	
+				[Function("IsWow64Process")]
+				public bool IsWow64Process()
+				{
+					bool retVal = false;
+	
+					IsWow64Process(Process.GetCurrentProcess().Handle, out retVal);
+	
+					return retVal;
+				}
+				]]>
+		</code>
+	</script>
+	
+	<target name="DetectIfWow64Process">
+		<description>
+			Detects whether we are currently in a WoW64 process or not.
+		</description>
+	
+		<property name="IsWow64Process" value="${PInvoke::IsWow64Process()}" />
+		<echo message="Setting the [IsWow64Process] property to ${IsWow64Process}." />
+	</target>
+	 
+	<target name="DetectIf64BitProcess">
+		<description>
+			Detects whether we are currently in a 32-bit or 64-bit process (not necessarily what the OS is running). Note that as of the time of this writing, this will ALWAYS return false because NAnt is compiled to run in 32-bit mode only.
+		</description>
+	
+		<!-- This can return x86, x64, AMD64, or IA64 as of the time of this writing. This works for a 32-bit process in a 64-bit OS because the OS makes the 64-bitness transparent to the process in this environment variable. -->
+		<property name="Is64BitProcess" value="${environment::get-variable('PROCESSOR_ARCHITECTURE')!='x86'}" />
+		<echo message="Setting the [Is64BitProcess] property to ${Is64BitProcess}." />
+	</target>
+
+	<target name="rebuild" depends="clean, build"/>
+
+	<target name="clean">
+		<delete dir="${path.build}" if="${directory::exists(path.build)}"/>
+		<delete dir="${path.dist}" if="${directory::exists(path.dist)}"/>
+	</target>
+
+	<target name="build" depends="InitializeBuildSystem all"/>
+	<target name="InitializeBuildSystem" depends="DetectOperatingSystemArchitecture"/>
+	
+	<target name="create-assembly-info" depends="get-git-revision">
+		<echo message="##teamcity[buildNumber '${build.version}']" />
+		<echo message="Assembly Version: '${build.assemblyversion}'" />
+		<echo message="Build Platform: '${build.platform}'" />
+		
+		<asminfo output="${path.build.assemblyinfo}" language="CSharp">
+			<imports>
+				<import namespace="System"/>
+				<import namespace="System.Reflection"/>
+				<import namespace="System.Runtime.InteropServices"/>
+			</imports>
+			<attributes>
+				<attribute type="AssemblyProductAttribute" value="${product.name}: ${product.description}"/>
+				<attribute type="AssemblyCompanyAttribute" value="${product.company}"/>
+				<attribute type="AssemblyCopyrightAttribute" value="Copyright © ${product.duration} ${product.company} and contributors"/>
+				<attribute type="AssemblyVersionAttribute" value="${build.assemblyversion}"/>
+				<attribute type="AssemblyFileVersionAttribute" value="${build.version}" unless="${build.platform == 'netcf-3.5'}"/>
+				<attribute type="ComVisibleAttribute" value="false"/>
+				<attribute type="CLSCompliantAttribute" value="true" if="${product.clsCompliant}"/>
+			</attributes>
+		</asminfo>
+	</target>
+
+	<target name="init">
+		<mkdir dir="${path.build}" if="${not(directory::exists(path.build))}"/>
+		<mkdir dir="${path.dist}" if="${not(directory::exists(path.dist))}"/>
+
+		<call target="config-build-${build.config}"/>
+		<call target="config-platform-${build.platform}"/>
+
+		<property name="current.path.ninject.lib" value="${path.lib}/Ninject/${build.platform}"/>
+		<property name="current.path.context.lib" value="${path.lib}/Ninject.Extensions.ContextPreservation/${build.platform}"/>
+		<property name="current.path.namedscope.lib" value="${path.lib}/Ninject.Extensions.NamedScope/${build.platform}"/>
+		<property name="current.path.build" value="${path.build}/${build.platform}/${build.config}"/>
+		<property name="current.path.build.lib" value="${path.build}/${build.platform}/${build.config}/lib"/>
+		<property name="current.path.test" value="${path.build}/${build.platform}/tests" />
+
+		<mkdir dir="${current.path.build}" if="${not(directory::exists(current.path.build))}"/>
+		<mkdir dir="${current.path.build.lib}" if="${not(directory::exists(current.path.build.lib))}"/>
+
+		<copy todir="${current.path.build}">
+			<fileset basedir="${path.base}">
+				<include name="LICENSE.txt"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${current.path.build.lib}">
+			<fileset basedir="${current.path.ninject.lib}">
+				<include name="**/*.dll"/>
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${current.path.build.lib}">
+			<fileset basedir="${current.path.context.lib}">
+				<include name="**/*.dll"/>
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${current.path.build.lib}">
+			<fileset basedir="${current.path.namedscope.lib}">
+				<include name="**/*.dll"/>
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="config-build-debug">
+		<property name="build.debug" value="true"/>
+		<property name="build.optimize" value="false" overwrite="false"/>
+		<property name="global.build.defines" value="DEBUG,TRACE"/>
+	</target>
+
+	<target name="config-build-release">
+		<property name="build.debug" value="true"/>
+		<property name="build.optimize" value="true" overwrite="false"/>
+		<property name="global.build.defines" value="TRACE,STRONG"/>
+	</target>
+
+	<target name="config-platform-net-3.5">
+		<property name="nant.settings.currentframework" value="net-3.5"/>
+		<property name="build.defines" value="${global.build.defines},NET,NET_35"/>
+		<property name="nuget.platform" value="net35-Full"/>
+		<property name="nuget.add" value="true"/>
+	</target>
+
+	<target name="config-platform-net-3.5_medium_trust">
+		<property name="nant.settings.currentframework" value="net-3.5"/>
+		<property name="build.defines" value="${global.build.defines},NET,NET_35,MEDIUM_TRUST"/>
+		<property name="nuget.add" value="false"/>
+	</target>
+
+	<target name="config-platform-net-4.0">
+		<property name="nant.settings.currentframework" value="net-4.0"/>
+		<property name="build.defines" value="${global.build.defines},NET,NET_40,NO_PARTIAL_TRUST"/>
+		<property name="path.tools.xunit.console" value="${path.tools.xunit}/xunit.console.clr4.exe"/>
+		<property name="nuget.platform" value="net40-Full"/>
+		<property name="nuget.add" value="true"/>
+	</target>
+
+	<target name="config-platform-net-4.0_medium_trust">
+		<property name="nant.settings.currentframework" value="net-4.0"/>
+		<property name="build.defines" value="${global.build.defines},NET,NET_40,MEDIUM_TRUST,NO_PARTIAL_TRUST"/>
+		<property name="path.tools.xunit.console" value="${path.tools.xunit}/xunit.console.clr4.exe"/>
+		<property name="nuget.add" value="false"/>
+	</target>
+	
+	<target name="config-platform-silverlight-2.0">
+		<property name="nant.settings.currentframework" value="silverlight-2.0"/>
+		<property name="build.defines" value="${global.build.defines},SILVERLIGHT,SILVERLIGHT_20,NO_ASSEMBLY_SCANNING,NO_PARTIAL_TRUST,NO_SKIP_VISIBILITY,NO_EXCEPTION_SERIALIZATION,NO_DEBUG_SYMBOLS"/>
+		<property name="nuget.platform" value="sl2"/>
+		<property name="nuget.add" value="true"/>
+	</target>
+
+	<target name="config-platform-silverlight-3.0">
+		<property name="nant.settings.currentframework" value="silverlight-3.0"/>
+		<property name="build.defines" value="${global.build.defines},SILVERLIGHT,SILVERLIGHT_30,NO_ASSEMBLY_SCANNING,NO_PARTIAL_TRUST,NO_SKIP_VISIBILITY,NO_EXCEPTION_SERIALIZATION,NO_DEBUG_SYMBOLS"/>
+		<property name="nuget.platform" value="sl3"/>
+		<property name="nuget.add" value="true"/>
+	</target>
+
+	<target name="config-platform-silverlight-4.0">
+		<property name="nant.settings.currentframework" value="silverlight-4.0"/>
+		<property name="build.defines" value="${global.build.defines},SILVERLIGHT,SILVERLIGHT_40,NO_ASSEMBLY_SCANNING,NO_PARTIAL_TRUST,NO_SKIP_VISIBILITY,NO_EXCEPTION_SERIALIZATION,NO_DEBUG_SYMBOLS,NO_PARTIAL_TRUST"/>
+		<property name="nuget.platform" value="sl4"/>
+		<property name="nuget.add" value="true"/>
+	</target>
+	
+	<target name="config-platform-silverlight-4.0-wp7">
+		<property name="nant.settings.currentframework" value="silverlight-4.0-wp7"/>
+		<property name="build.defines" value="${global.build.defines},SILVERLIGHT,SILVERLIGHT_40,WINDOWS_PHONE,NO_LCG,NO_ASSEMBLY_SCANNING,NO_PARTIAL_TRUST,NO_SKIP_VISIBILITY,NO_EXCEPTION_SERIALIZATION,NO_DEBUG_SYMBOLS, NO_MOQ"/>
+		<property name="nuget.platform" value="sl3-wp"/>
+		<property name="nuget.add" value="true"/>
+	</target>
+
+	<target name="config-platform-netcf-3.5">
+		<property name="nant.settings.currentframework" value="netcf-3.5"/>
+		<property name="build.defines" value="${global.build.defines},NETCF,NETCF_35,NO_LCG,NO_ASSEMBLY_SCANNING,NO_PARTIAL_TRUST,NO_EXCEPTION_SERIALIZATION,NO_DEBUG_SYMBOLS"/>
+		<property name="nuget.add" value="false"/>
+	</target>
+
+	<target name="config-platform-mono-2.0">
+		<property name="nant.settings.currentframework" value="mono-2.0"/>
+		<property name="build.defines" value="${global.build.defines},NET,NET_35,MONO"/>
+		<property name="nuget.add" value="false"/>
+	</target>
+
+	<target name="config-platform-mono-2.0-no-web">
+		<property name="nant.settings.currentframework" value="mono-2.0"/>
+		<property name="build.defines" value="${global.build.defines},NET,NET_35,MONO"/>
+		<property name="nuget.add" value="false"/>
+	</target>
+	
+	<target name="test" depends="compile-tests" unless="${skip.tests}" if="${not(string::contains(build.platform, 'silverlight') or build.platform == 'netcf-3.5')}">
+		<exec 
+			program="${path.tools.xunit.console}" 
+			workingdir="${current.path.test}" 
+			commandline="${product.assembly.test} /html ${current.path.test}/results.html" 
+			failonerror="true"
+			if="${not(string::contains(build.platform, 'mono')) or teamcity}"/>
+
+		<if test="${string::contains(build.platform, 'mono') and not(teamcity)}">
+			<exec 
+				program="${framework::get-runtime-engine(framework::get-target-framework())}" 
+				workingdir="${current.path.test}" 
+				commandline="${path.tools.xunit.console} ${product.assembly.test} /html ${current.path.test}/results.html" 
+				failonerror="true"/>
+		</if>
+			
+		<if test="${not Is64BitOperatingSystem}">
+			<exec verbose="true" program="${path.tools.ncover}/ncover.console.exe" workingdir="${current.path.test}"
+				commandline="&quot;${path.tools.xunit.console}&quot; &quot;${product.assembly.test}&quot; //reg //w &quot;.&quot; //x &quot;coverage.xml&quot;" />
+		</if>
+	</target>
+
+	<target name="silverlight-test" depends="compile-silverlight-tests" unless="${skip.tests or skip.silverlightTests or string::contains(build.platform, 'wp7')}" if="${string::contains(build.platform, 'silverlight')}">
+	    <property name="cmdLine" value='-x"${product.assembly.silverlighttest}" --teamcity' if="${teamcity}"/>
+		<property name="cmdLine" value='-x"${product.assembly.silverlighttest}"' unless="${teamcity}"/>
+		<exec program="${path.tools.statlight}" workingdir="${current.path.test}" commandline="${cmdLine}" failonerror="true"/>
+	</target>
+
+	<target name="UnzipDependencies">
+		<foreach item="String" in="${dependencies}" delim="," property="dependency">
+			<delete>
+				<fileset>
+					<include name="${path.lib}/${dependency}/**/*" />
+					<exclude name="${path.lib}/${dependency}/*.txt" />
+					<exclude name="${path.lib}/${dependency}/*.zip" />
+				</fileset>
+			</delete>
+			<foreach item="File" property="filepath">
+				<in>
+					<items>
+						<include name="${path.lib}/${dependency}/*release*.zip"/>
+					</items>
+				</in>
+				<do>
+					<property name="filename" value="${path::get-file-name-without-extension(filepath)}"/>
+					<property name="index" value="${string::index-of(filename, 'release')}"/>
+					<property name="destinationDir" value="${string::substring(filename, string::index-of(filename, 'release') + 8, string::get-length(filename) - string::index-of(filename, 'release') - 8)}"/>
+					
+					<unzip zipfile="${filepath}" todir="${path.lib}/${dependency}/${destinationDir}"/>
+				</do>
+			</foreach>
+		</foreach>
+	</target>
+	
+	<target name="package-all" depends="all package-bin package-source" />
+	
+	<target name="buildServerPlatforms" depends="InitializeBuildSystem">
+		<foreach item="String" in="${product.buildserverPlatforms}" delim="," property="platform">
+			<property name="build.platform" value="${platform}"/>
+			<call target="package-bin"/>
+		</foreach>
+		<call target="package-source"/>
+	</target>
+
+	<target name="allPlatforms" depends="InitializeBuildSystem">
+		<foreach item="String" in="${product.platforms}" delim="," property="platform">
+			<property name="build.platform" value="${platform}"/>
+			<call target="package-bin"/>
+		</foreach>
+		<call target="package-source"/>
+		<call target="nuget-all"/>
+	</target>
+	
+	<target name="package-bin" depends="create-assembly-info all">
+		<mkdir dir="${path.dist}" if="${not(directory::exists(path.dist))}"/>
+		<zip zipfile="${path.dist}\${product.name}${product.packagePostfix}-${build.version}-${product.additionalVersionTag}${build.config}-${build.platform}.zip" ziplevel="9">
+			<fileset basedir="${current.path.build}">
+				<include name="**/*.*"/>
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="package-source" depends="create-assembly-info">
+		<mkdir dir="${path.dist}" if="${not(directory::exists(path.dist))}"/>
+		<zip zipfile="${path.dist}\${product.name}${product.packagePostfix}-${build.version}-${product.additionalVersionTag}source.zip" ziplevel="9">
+			<fileset basedir="${path.base}">
+				<include name="lib/*.*"/>
+				<include name="**/*.cs"/>
+				<include name="**/*.csproj"/>
+				<include name="**/*.sln"/>
+				<include name="**/*.txt"/>
+				<include name="**/*.build"/>
+				<include name="**/*.include"/>
+				<include name="**/*.snk"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="revert">
+		<echo message="Reverting version info"/>
+		<exec
+			program="${path.tools.git}/git.exe"
+			commandline='checkout "${path.build.assemblyinfo}"'
+			failonerror="false"/>
+	</target>	
+
+	<target name="get-git-revision">
+		<property name="temp.revision.file" value="RevisionNr.tmp" />
+		<exec
+			program="${path.tools.git}/git.exe"
+			commandline='describe --long'
+			failonerror="true" 
+			output="${temp.revision.file}"/>
+		<loadfile file="${temp.revision.file}" property="actual.git.revision"/>
+		<regex pattern="(?&lt;gitmajor&gt;\d+)\.(?&lt;gitminor&gt;\d+)\.(?&lt;gitbuild&gt;\d+)\.(?&lt;gitrevision&gt;\d+)-(?&lt;gitrevisionnumber&gt;\d+)-.*" input="${actual.git.revision}"/>
+		<property name="version.major" value="${gitmajor}" overwrite="true" />
+		<property name="version.minor" value="${gitminor}" overwrite="true" />
+		<property name="version.build" value="${gitbuild}" overwrite="true" />
+		<property name="version.revision" value="${gitrevisionnumber}" overwrite="true" />
+		<delete file="${temp.revision.file}" failonerror="false"/>
+	</target>
+	
+	<target name="nuget">
+		<property name="nuget.sourcedir" value="${path.base}/nuget" />
+		<property name="nuget.basedir" value="${path.base}/build/nuget" />
+		<property name="nuget.symbol.basedir" value="${path.base}/build/nuget_symbol" />
+		<property name="nuget.platforms" value="${product.platforms}" />
+		<property name="nuget.name" value="${product.name}" />
+		<property name="nuget.project" value="${path.src}/${product.name}/${product.name}.csproj" />
+		<property name="nuget.releaseDirectory" value="${path.build}\${build.platform}\release" dynamic="true"/>
+		<property name="nuget.dependencies" value="${dependencies}" />
+		<property name="nuget.additionalFiles" value="-" />
+		<property name="nuget.packageName" value="${nuget.name}${product.packagePostfix}.${build.version}" />	
+
+		<call target="nuget-run"/>
+	</target>
+
+	<target name="nuget-run" depends="get-git-revision" description="Copies the nuget output to the top bin directory">
+		<delete dir="${nuget.basedir}"/>
+		<delete dir="${nuget.symbol.basedir}"/>
+		<property name="nuget.platform" value=""/>
+		
+		<call target="config-build-${build.config}"/>
+		<foreach item="String" in="${nuget.platforms}" delim="," property="platform">
+			<property name="build.platform" value="${platform}"/>
+			<call target="config-platform-${build.platform}"/>
+			<copy overwrite="false" todir="${nuget.basedir}\lib\${nuget.platform}" flatten="true" if="${nuget.add}">
+				<fileset basedir="${nuget.releaseDirectory}">
+					<include name="${nuget.name}.dll" />
+					<include name="${nuget.name}.xml" />
+					<include name="${nuget.name}.pdb" />
+					<include name="${nuget.additionalFiles}" unless="${nuget.additionalFiles == '-'}"/>
+			    </fileset>
+			</copy>		
+		</foreach>
+
+		<copy overwrite="false" todir="${nuget.basedir}">
+			<fileset basedir="${nuget.sourcedir}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		
+		<copy overwrite="false" todir="${path.base}">
+			<fileset basedir="${nuget.sourcedir}">
+				<include name="License.txt" />
+			</fileset>
+		</copy>		
+		 
+		<echo message="Build Version: ${build.version}"/>
+		<xmlpoke file="${nuget.basedir}/${nuget.name}.nuspec" xpath="//package/nu:metadata/nu:version" value="${build.version}">
+			<namespaces>
+				<namespace prefix="xsi" uri="http://www.w3.org/2001/XMLSchema-instance" />
+				<namespace prefix="xsd" uri="http://www.w3.org/2001/XMLSchema" />
+				<namespace prefix="nu" uri="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd" />
+			</namespaces>
+		</xmlpoke>
+		
+		<foreach item="String" in="${nuget.dependencies}" delim="," property="dependency">
+			<property name="asm1" value="${path.lib}\${dependency}\net-4.0\${dependency}.dll"/>
+			<property name="asm2" value="${nuget.releaseDirectory}\${dependency}.dll"/>
+			<property name="asm3" value="${nuget.releaseDirectory}\lib\${dependency}.dll"/>
+			<property name="asm" value="${asm3}" if="${file::exists(asm3)}"/>
+			<property name="asm" value="${asm2}" if="${file::exists(asm2)}"/>
+			<property name="asm" value="${asm1}" if="${file::exists(asm1)}"/>
+			
+			<property name="version" value="${assemblyname::get-version(assemblyname::get-assembly-name(asm))}"/>
+			<property name="maxVersion" value=""/>
+			<property name="i" value="0"/>
+			<foreach item="String" in="${version}" delim="." property="versionPart">
+				<property name="i" value="${int::parse(i) + 1}"/>
+				<property name="maxVersion" value="${maxVersion + '.'}" unless="${i == '1'}"/>
+				<property name="maxVersion" value="${maxVersion + versionPart}" if="${i == '1'}"/>
+				<property name="maxVersion" value="${maxVersion + int::to-string(int::parse(versionPart) + 1)}" if="${i == '2'}"/>
+				<property name="maxVersion" value="${maxVersion + '0'}" if="${i == '3'}"/>
+				<property name="maxVersion" value="${maxVersion + '0'}" if="${i == '4'}"/>
+			</foreach>
+			
+			<xmlpoke file="${nuget.basedir}/${nuget.name}.nuspec" 
+			         xpath="//package/nu:metadata/nu:dependencies/nu:dependency[@id='${dependency}']/@version" 
+					 value="${'[' + version + ',' + maxVersion + ')'}">
+				<namespaces>
+					<namespace prefix="xsi" uri="http://www.w3.org/2001/XMLSchema-instance" />
+					<namespace prefix="xsd" uri="http://www.w3.org/2001/XMLSchema" />
+					<namespace prefix="nu" uri="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd" />
+				</namespaces>
+			</xmlpoke>
+		</foreach>
+
+		<exec program="${path.tools.nuget}" workingdir="${nuget.basedir}" commandline="pack ${nuget.basedir}\${nuget.name}.nuspec" />
+		<move todir="${path.dist}\NuGet\">
+			<fileset basedir="${nuget.basedir}">
+				<include name="*.nupkg" />
+			</fileset>
+		</move>
+		
+		<exec program="${path.tools.nuget}" workingdir="${nuget.basedir}" commandline="pack ${nuget.project} -symbols" />
+		<unzip zipfile="${path.dist}\NuGet\${nuget.packageName}.nupkg" todir="${nuget.symbol.basedir}/target"/>
+		<unzip zipfile="${nuget.basedir}\${nuget.name}.${version.major}.${version.minor}.symbols.nupkg" todir="${nuget.symbol.basedir}/source"/>
+		<copy overwrite="false" todir="${nuget.symbol.basedir}/target">
+			<fileset basedir="${nuget.symbol.basedir}/source">
+				<include name="[Content_Types].xml" />
+				<include name="src/**" />
+			</fileset>
+		</copy>
+		<zip zipfile="${path.dist}\NuGet\${nuget.packageName}.symbols.nupkg">
+			<fileset basedir="${nuget.symbol.basedir}/target">
+				<include name="**"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="CopyDefaultTestInfrastructureAssemblies">
+		<call target="CopyProjectOutput"/>
+		<call target="CopyXUnit"/>
+		<call target="CopyMoq"/>
+		<call target="CopyFluentAssertions"/>
+	</target>
+
+	<target name="CopyDefaultTestInfrastructureAssemblies-SL">
+		<call target="CopyProjectOutput"/>
+		<call target="CopyXUnit-SL"/>
+		<call target="CopyMoq-SL"/>
+		<call target="CopyFluentAssertions-SL"/>
+	</target>
+
+	<target name="CopyFluentAssertions">
+		<copy todir="${current.path.test}" if="${string::contains(build.platform, 'net-4.0')}">
+			<fileset basedir="${path.tools.fluentassertions}/Net-4.0">
+				<include name="FluentAssertions.dll"/>
+			</fileset>
+		</copy>
+		<copy todir="${current.path.test}" unless="${string::contains(build.platform, 'net-4.0')}">
+			<fileset basedir="${path.tools.fluentassertions}/Net-3.5">
+				<include name="FluentAssertions.dll"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="CopyMoq">
+		<copy todir="${current.path.test}" if="${not(string::contains(build.platform, 'net-4.0'))}">
+			<fileset basedir="${path.tools.moq}/net35">
+				<include name="Moq.dll"/>
+			</fileset>
+		</copy>
+		<copy todir="${current.path.test}" if="${string::contains(build.platform, 'net-4.0')}">
+			<fileset basedir="${path.tools.moq}/net40">
+				<include name="Moq.dll"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="CopyXUnit">
+		<copy todir="${current.path.test}">
+			<fileset basedir="${path.tools.xunit}">
+				<include name="xunit.dll"/>
+				<include name="xunit.extensions.dll"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="CopyFluentAssertions-SL">
+		<copy todir="${current.path.test}">
+			<fileset basedir="${path.tools.fluentassertions}/${build.platform}">
+				<include name="FluentAssertions.Silverlight.dll"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="CopyMoq-SL">
+		<copy todir="${current.path.test}" if="${string::contains(build.platform, 'silverlight-4.0')}">
+			<fileset basedir="${path.tools.moq}/silverlight4">
+				<include name="Moq.Silverlight.dll"/>
+				<include name="Castle.Core.dll"/>
+			</fileset>
+		</copy>
+		<copy todir="${current.path.test}" unless="${string::contains(build.platform, 'silverlight-4.0')}">
+			<fileset basedir="${path.tools.moq}/silverlight3">
+				<include name="Moq.Silverlight.dll"/>
+				<include name="Castle.Core-Silverlight.dll"/>
+				<include name="Castle.DynamicProxy-Silverlight.dll"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="CopyXUnit-SL">
+		<copy todir="${current.path.test}">
+			<fileset basedir="${path.tools.xunit.sl}${build.platform}">
+				<include name="*.dll"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="CopyProjectOutput">
+		<copy todir="${current.path.test}" flatten="true">
+			<fileset basedir="${current.path.build}">
+				<include name="**/*.dll"/>
+			</fileset>
+		</copy>
+	</target>
+</project>

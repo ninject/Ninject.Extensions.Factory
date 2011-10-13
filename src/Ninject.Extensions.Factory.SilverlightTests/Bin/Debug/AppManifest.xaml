@@ -1,0 +1,11 @@
+﻿<Deployment xmlns="http://schemas.microsoft.com/client/2007/deployment" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" EntryPointAssembly="Ninject.Extensions.Factory.SilverlightTests" EntryPointType="Ninject.Extensions.Factory.App" RuntimeVersion="4.0.60310.0">
+  <Deployment.Parts>
+    <AssemblyPart x:Name="Ninject.Extensions.Factory.SilverlightTests" Source="Ninject.Extensions.Factory.SilverlightTests.dll" />
+    <AssemblyPart x:Name="FluentAssertions.Silverlight" Source="FluentAssertions.Silverlight.dll" />
+    <AssemblyPart x:Name="Ninject" Source="Ninject.dll" />
+    <AssemblyPart x:Name="xunit-silverlight" Source="xunit-silverlight.dll" />
+    <AssemblyPart x:Name="xunit.runner.silverlight" Source="xunit.runner.silverlight.dll" />
+    <AssemblyPart x:Name="System.Xml.Linq" Source="System.Xml.Linq.dll" />
+    <AssemblyPart x:Name="Microsoft.CSharp" Source="Microsoft.CSharp.dll" />
+  </Deployment.Parts>
+</Deployment>

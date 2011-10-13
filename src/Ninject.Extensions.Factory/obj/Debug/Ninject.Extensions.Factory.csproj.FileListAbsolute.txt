@@ -1,0 +1,5 @@
+C:\Projects\Ninject\ninject.extensions.factory\build\debug\Ninject.Extensions.Factory.dll
+C:\Projects\Ninject\ninject.extensions.factory\build\debug\Ninject.Extensions.Factory.pdb
+C:\Projects\Ninject\ninject.extensions.factory\src\Ninject.Extensions.Factory\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\Ninject\ninject.extensions.factory\src\Ninject.Extensions.Factory\obj\Debug\Ninject.Extensions.Factory.dll
+C:\Projects\Ninject\ninject.extensions.factory\src\Ninject.Extensions.Factory\obj\Debug\Ninject.Extensions.Factory.pdb
