@@ -22,12 +22,10 @@
 namespace Ninject.Extensions.Factory
 {
     using System;
-    using System.Drawing;
     using System.Linq;
 
     using FluentAssertions;
 
-    using Ninject.Activation;
     using Ninject.Extensions.Factory.Fakes;
     using Ninject.Tests.Fakes;
     using Ninject.Tests.Integration;
@@ -42,6 +40,9 @@ namespace Ninject.Extensions.Factory
         public FuncTests()
         {
             this.kernel = new StandardKernel();
+#if NO_ASSEMBLY_SCANNING
+            this.kernel.Load(new FuncModule());
+#endif
         }
 
         public void Dispose()
@@ -66,17 +67,17 @@ namespace Ninject.Extensions.Factory
         [Fact]
         public void FuncInjectionWithParameters()
         {
-            Color color = Color.BlueViolet;
+            const string Name = "Excalibur";
             const int Width = 34;
             const int Length = 123;
 
             this.kernel.Bind<ICustomizableWeapon>().To<CustomizableSword>();
 
             var service = this.kernel.Get<ClassWithParameterizedFunc>();
-            var weapon = service.CreateWeapon(color, Width, Length);
+            var weapon = service.CreateWeapon(Name, Width, Length);
 
             weapon.Should().BeOfType<CustomizableSword>();
-            weapon.Color.Should().Be(color);
+            weapon.Name.Should().Be(Name);
             weapon.Width.Should().Be(Width);
             weapon.Length.Should().Be(Length);
         }
@@ -84,17 +85,17 @@ namespace Ninject.Extensions.Factory
         [Fact]
         public void FuncInjectionWithParametersAndConfiguredValues()
         {
-            Color color = Color.BlueViolet;
+            const string Name = "Excalibur";
             const int Width = 34;
             const int Length = 123;
 
-            this.kernel.Bind<ICustomizableWeapon>().ToConstructor(x => new CustomizableSword(x.Inject<Color>(), Width, x.Inject<int>()));
+            this.kernel.Bind<ICustomizableWeapon>().ToConstructor(x => new CustomizableSword(x.Inject<string>(), Width, x.Inject<int>()));
 
             var service = this.kernel.Get<ClassWithParameterizedFunc>();
-            var weapon = service.CreateWeapon(color, Length);
+            var weapon = service.CreateWeapon(Name, Length);
 
             weapon.Should().BeOfType<CustomizableSword>();
-            weapon.Color.Should().Be(color);
+            weapon.Name.Should().Be(Name);
             weapon.Width.Should().Be(Width);
             weapon.Length.Should().Be(Length);
         }
@@ -102,7 +103,7 @@ namespace Ninject.Extensions.Factory
         [Fact]
         public void FuncInjectionWithParametersAndInjectedValues()
         {
-            Color color = Color.BlueViolet;
+            const string Name = "Excalibur";
             const int Width = 34;
             const int Length = 123;
 
@@ -110,14 +111,15 @@ namespace Ninject.Extensions.Factory
             this.kernel.Bind<int>().ToConstant(Length);
 
             var service = this.kernel.Get<ClassWithParameterizedFunc>();
-            var weapon = service.CreateWeapon(color, Width);
+            var weapon = service.CreateWeapon(Name, Width);
 
             weapon.Should().BeOfType<CustomizableSword>();
-            weapon.Color.Should().Be(color);
+            weapon.Name.Should().Be(Name);
             weapon.Width.Should().Be(Width);
             weapon.Length.Should().Be(Length);
         }
 
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         [Fact]
         public void LazyInjection()
         {
@@ -131,12 +133,14 @@ namespace Ninject.Extensions.Factory
             weapon2.Should().BeOfType<Sword>();
             weapon1.Should().BeSameAs(weapon2);
         }
+#endif
 
         [Theory]
         [InlineData(new[] { 1 }, new[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })]
         [InlineData(new[] { 1, 2 }, new[] { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })]
         [InlineData(new[] { 1, 2, 3 }, new[] { 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })]
         [InlineData(new[] { 1, 2, 3, 4 }, new[] { 1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })]
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         [InlineData(new[] { 1, 2, 3, 4, 5 }, new[] { 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })]
         [InlineData(new[] { 1, 2, 3, 4, 5, 6 }, new[] { 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })]
         [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7 }, new[] { 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0 })]
@@ -149,6 +153,7 @@ namespace Ninject.Extensions.Factory
         [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 }, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 0 })]
         [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 })]
         [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 })]
+#endif
         public void FuncOverloads(int[] input, int[] expectedValues)
         {
             var methodInfo = typeof(FuncOverloadTestFake).GetMethod("Create", input.Select(i => i.GetType()).ToArray());
@@ -160,6 +165,7 @@ namespace Ninject.Extensions.Factory
             instance.Arg2.Should().Be(expectedValues[1]);
             instance.Arg3.Should().Be(expectedValues[2]);
             instance.Arg4.Should().Be(expectedValues[3]);
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
             instance.Arg5.Should().Be(expectedValues[4]);
             instance.Arg6.Should().Be(expectedValues[5]);
             instance.Arg7.Should().Be(expectedValues[6]);
@@ -172,22 +178,7 @@ namespace Ninject.Extensions.Factory
             instance.Arg14.Should().Be(expectedValues[13]);
             instance.Arg15.Should().Be(expectedValues[14]);
             instance.Arg16.Should().Be(expectedValues[15]);
-        }
-
-        [Fact]
-        public void ContextIsPreserved()
-        {
-            this.kernel.Bind<IWeapon>().To<Sword>().When(this.Abc);
-
-            var service = this.kernel.Get<ClassWithFunc>();
-            var weapon = service.CreateWeapon();
-
-            weapon.Should().BeOfType<Sword>();
-        }
-
-        private bool Abc(IRequest request)
-        {
-            return false;
+#endif
         }
     }
 }

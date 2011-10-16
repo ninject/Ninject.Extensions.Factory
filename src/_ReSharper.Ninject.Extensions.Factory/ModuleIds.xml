@@ -1,9 +1,0 @@
-<Modules>
-  <Module PersistentId="9831975F-FA35-4B8B-A545-1A06852625BB" ModuleId="Ninject.Extensions.Factory" />
-  <Module PersistentId="EB0A05EF-2630-4F8B-92D8-6763509C0D80" ModuleId="Ninject.Extensions.Factory.Test" />
-  <Module PersistentId="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc" ModuleId="Castle.Core" />
-  <Module PersistentId="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" ModuleId="mscorlib" />
-  <Module PersistentId="Ninject, Version=2.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7" ModuleId="Ninject" />
-  <Module PersistentId="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920" ModuleId="Moq" />
-  <Module PersistentId="Ninject.Extensions.ContextPreservation, Version=2.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7" ModuleId="Ninject.Extensions.ContextPreservation" />
-</Modules>

@@ -14,6 +14,7 @@
 
         private readonly Func<int, int, int, int, FuncOverloadTestImplementationFake> factory4;
 
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         private readonly Func<int, int, int, int, int, FuncOverloadTestImplementationFake> factory5;
 
         private readonly Func<int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory6;
@@ -37,13 +38,13 @@
         private readonly Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory15;
 
         private readonly Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory16;
-
+#endif
         public FuncOverloadTestFake(
-            Func<FuncOverloadTestImplementationFake> factory0,
             Func<int, FuncOverloadTestImplementationFake> factory1,
             Func<int, int, FuncOverloadTestImplementationFake> factory2,
             Func<int, int, int, FuncOverloadTestImplementationFake> factory3,
             Func<int, int, int, int, FuncOverloadTestImplementationFake> factory4,
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
             Func<int, int, int, int, int, FuncOverloadTestImplementationFake> factory5,
             Func<int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory6,
             Func<int, int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory7,
@@ -55,13 +56,16 @@
             Func<int, int, int, int, int, int, int, int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory13,
             Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory14,
             Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory15,
-            Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory16)
+            Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, FuncOverloadTestImplementationFake> factory16,
+#endif
+            Func<FuncOverloadTestImplementationFake> factory0)
         {
             this.factory0 = factory0;
             this.factory1 = factory1;
             this.factory2 = factory2;
             this.factory3 = factory3;
             this.factory4 = factory4;
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
             this.factory5 = factory5;
             this.factory6 = factory6;
             this.factory7 = factory7;
@@ -74,6 +78,7 @@
             this.factory14 = factory14;
             this.factory15 = factory15;
             this.factory16 = factory16;
+#endif
         }
 
         public FuncOverloadTestImplementationFake Create()
@@ -101,6 +106,7 @@
             return this.factory4(arg1, arg2, arg3, arg4);
         }
 
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         public FuncOverloadTestImplementationFake Create(int arg1, int arg2, int arg3, int arg4, int arg5)
         {
             return this.factory5(arg1, arg2, arg3, arg4, arg5);
@@ -160,6 +166,7 @@
         {
             return this.factory16(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
         }
+#endif
     }
 
     public class FuncOverloadTestImplementationFake
@@ -191,6 +198,7 @@
             this.Arg4 = arg4;
         }
 
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         public FuncOverloadTestImplementationFake(int arg1, int arg2, int arg3, int arg4, int arg5)
             : this(arg1, arg2, arg3, arg4)
         {
@@ -262,7 +270,8 @@
         {
             this.Arg16 = arg16;
         }
-        
+#endif
+
         public int Arg1 { get; private set; }
 
         public int Arg2 { get; private set; }
@@ -271,6 +280,7 @@
 
         public int Arg4 { get; private set; }
 
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         public int Arg5 { get; private set; }
 
         public int Arg6 { get; private set; }
@@ -294,5 +304,6 @@
         public int Arg15 { get; private set; }
 
         public int Arg16 { get; private set; }
+#endif
     }
 }

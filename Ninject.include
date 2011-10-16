@@ -275,8 +275,7 @@
 			program="${path.tools.xunit.console}" 
 			workingdir="${current.path.test}" 
 			commandline="${product.assembly.test} /html ${current.path.test}/results.html" 
-			failonerror="true"
-			if="${not(string::contains(build.platform, 'mono')) or teamcity}"/>
+			failonerror="true"/>
 
 		<if test="${string::contains(build.platform, 'mono') and not(teamcity)}">
 			<exec 
@@ -502,17 +501,17 @@
 	</target>
 	
 	<target name="CopyDefaultTestInfrastructureAssemblies">
-		<call target="CopyProjectOutput"/>
 		<call target="CopyXUnit"/>
 		<call target="CopyMoq"/>
 		<call target="CopyFluentAssertions"/>
+		<call target="CopyProjectOutput"/>
 	</target>
 
 	<target name="CopyDefaultTestInfrastructureAssemblies-SL">
-		<call target="CopyProjectOutput"/>
 		<call target="CopyXUnit-SL"/>
 		<call target="CopyMoq-SL"/>
 		<call target="CopyFluentAssertions-SL"/>
+		<call target="CopyProjectOutput"/>
 	</target>
 
 	<target name="CopyFluentAssertions">
@@ -583,7 +582,7 @@
 	</target>
 
 	<target name="CopyProjectOutput">
-		<copy todir="${current.path.test}" flatten="true">
+		<copy todir="${current.path.test}" flatten="true" overwrite="true">
 			<fileset basedir="${current.path.build}">
 				<include name="**/*.dll"/>
 			</fileset>

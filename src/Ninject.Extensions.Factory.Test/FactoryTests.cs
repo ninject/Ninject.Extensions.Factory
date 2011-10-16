@@ -19,10 +19,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+#if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
 namespace Ninject.Extensions.Factory
 {
     using System;
-    using System.Drawing;
 
     using FluentAssertions;
 
@@ -39,13 +39,16 @@ namespace Ninject.Extensions.Factory
         public FactoryTests()
         {
             this.kernel = new StandardKernel();
+#if NO_ASSEMBLY_SCANNING
+            this.kernel.Load(new FuncModule());
+#endif        
         }
 
         public void Dispose()
         {
             this.kernel.Dispose();
         }
-        
+ 
         [Fact]
         public void BindToFactory()
         {
@@ -59,18 +62,19 @@ namespace Ninject.Extensions.Factory
         [Fact]
         public void BindToFactoryWithArguments()
         {
-            Color color = Color.BlueViolet;
+            const string Name = "Excalibur";
             const int Width = 34;
             const int Length = 123;
 
             this.kernel.Bind<ICustomizableWeapon>().To<CustomizableSword>();
             this.kernel.Bind<IWeaponFactory>().ToFactory();
-            var weapon = this.kernel.Get<IWeaponFactory>().CreateCustomizableWeapon(Length, color, Width);
+            var weapon = this.kernel.Get<IWeaponFactory>().CreateCustomizableWeapon(Length, Name, Width);
 
             weapon.Should().BeOfType<CustomizableSword>();
-            weapon.Color.Should().Be(color);
+            weapon.Name.Should().Be(Name);
             weapon.Length.Should().Be(Length);
             weapon.Width.Should().Be(Width);
         }
     }
 }
+#endif

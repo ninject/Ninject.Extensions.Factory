@@ -1,1 +1,0 @@
-﻿C:\Projects\Ninject\ninject.extensions.factory\tools\moq\NET40\Moq.dll

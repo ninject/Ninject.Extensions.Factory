@@ -142,6 +142,7 @@ namespace Ninject.Extensions.Factory
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg4), arg4));
         }
 
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         /// <summary>
         /// Creates a new Func that creates a new TService instance using the specified resolution root.
         /// </summary>
@@ -573,5 +574,6 @@ namespace Ninject.Extensions.Factory
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg15), arg15),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg16), arg16));
         }
+#endif
     }
 }

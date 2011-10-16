@@ -4,7 +4,7 @@
 	<property name="product.name" value="Ninject.Extensions.Factory" overwrite="false"/>
 	<property name="product.company" value="bbv Software Services AG" overwrite="false"/>
 	<property name="product.duration" value="2009-2011" overwrite="false"/>
-	<property name="product.description" value="Child kernel extension for Ninject" overwrite="false"/>
+	<property name="product.description" value="Factory extension for Ninject" overwrite="false"/>
 	<property name="product.platforms" value="net-3.5,net-4.0,silverlight-4.0,silverlight-3.0,silverlight-2.0,silverlight-4.0-wp7,mono-2.0,netcf-3.5"  overwrite="false"/>
 	<property name="product.buildserverPlatforms" value="net-3.5,net-4.0,silverlight-4.0,silverlight-3.0,silverlight-2.0,mono-2.0,netcf-3.5"  overwrite="false"/>
 	<property name="dependencies" value="Ninject,Ninject.Extensions.ContextPreservation"  overwrite="false"/>
@@ -14,6 +14,22 @@
 	<target name="nuget-all" depends="nuget"/>
 
 	<target name="core" depends="init">
+		<property name="NoDynamicProxy" value = "false"/>
+		<property name="NoDynamicProxy" value = "true" if="${string::contains(build.platform, 'silverlight-2.0') or string::contains(build.platform, 'netcf-3.5') or string::contains(build.platform, 'wp7')}"/>
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-3.5" if="${string::contains(build.platform, 'net-3.5')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-4.0" if="${string::contains(build.platform, 'net-4.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-3.0" if="${string::contains(build.platform, 'silverlight-3.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-4.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-3.5" if="${string::contains(build.platform, 'mono')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}" if="${NoDynamicProxy}" />
+		
+		<copy todir="${current.path.build}/DynamicProxy/lib" unless="${NoDynamicProxy}">
+			<fileset basedir="${current.path.lib.DynamicProxy}">
+				<include name="**/*.dll"/>
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>		
+
 		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" output="${current.path.build}/${product.assembly}" doc="${current.path.build}/${product.docfile}" keyfile="${path.src}/${product.keyfile}">
 			<arg line="/filealign:512" unless="${nant.settings.currentframework == 'mono-2.0'}"/>
 			<sources basedir="${path.src}">
@@ -25,6 +41,7 @@
 				<include name="System.dll"/>
 				<include name="System.Core.dll"/>
 				<include name="${path.lib}/Ninject/${build.platform}/Ninject.dll"/>
+				<include name="${current.path.lib.DynamicProxy}/Castle.Core.dll" unless="${NoDynamicProxy}"/>
 			</references>
 		</csc>
 	</target>
@@ -42,11 +59,14 @@
 				<include name="mscorlib.dll"/>
 				<include name="System.dll"/>
 				<include name="System.Core.dll"/>
+				<include name="System.Drawing.dll"/>
 				<include name="Moq.dll"/>
 				<include name="xunit.dll"/>
+				<include name="xunit.extensions.dll"/>
 				<include name="FluentAssertions.dll"/>
 				<include name="${product.assembly}"/>
 				<include name="${path.lib}/Ninject/${build.platform}/Ninject.dll"/>
+				<include name="${current.path.lib.DynamicProxy}/Castle.Core.dll" unless="${NoDynamicProxy}"/>
 			</references>
 			<nowarn>
 				<warning number="1584"/>
@@ -68,20 +88,20 @@
 				<include name="mscorlib.dll"/>
 				<include name="System.dll"/>
 				<include name="System.Core.dll"/>
+				<include name="System.Drawing.dll"/>
 				<include name="System.Windows.dll"/>
 				<include name="System.Windows.Browser.dll"/>
 				<include name="System.Net.dll"/>
 				<include name="Microsoft.Phone.dll" if="${string::contains(build.platform, 'wp7')}"/>
 				<include name="Microsoft.Phone.Interop.dll" if="${string::contains(build.platform, 'wp7')}"/>
 				<include name="Moq.Silverlight.dll" unless="${string::contains(build.platform, 'wp7')}"/>
-				<include name="Castle.Core.dll" if="${build.platform == 'silverlight-4.0'}"/>
-				<include name="Castle.Core-Silverlight.dll" unless="${string::contains(build.platform, 'silverlight-4.0')}"/>
-				<include name="Castle.DynamicProxy-Silverlight.dll" unless="${string::contains(build.platform, 'silverlight-4.0')}"/>
 				<include name="xunit.runner.silverlight.dll"/>
 				<include name="xunit-silverlight.dll"/>
+				<include name="xunit.extensions-silverlight.dll"/>
 				<include name="FluentAssertions.Silverlight.dll"/>
 				<include name="${product.assembly}"/>
 				<include name="${path.lib}/Ninject/${build.platform}/Ninject.dll"/>
+				<include name="${current.path.lib.DynamicProxy}/Castle.Core.dll" unless="${NoDynamicProxy}"/>
 			</references>
 			<nowarn>
 				<warning number="1584"/>

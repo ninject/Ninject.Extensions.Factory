@@ -19,6 +19,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+#if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
 namespace Ninject.Extensions.Factory
 {
     using Castle.DynamicProxy;
@@ -39,13 +40,14 @@ namespace Ninject.Extensions.Factory
         public static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(this IBindingToSyntax<TInterface> syntax)
             where TInterface : class
         {
-            var proxy = new ProxyGenerator().ProxyBuilder
-                .CreateInterfaceProxyTypeWithoutTarget(typeof(TInterface), new[] { typeof(IFactoryProxy) }, ProxyGenerationOptions.Default);
-            var proxy2 = new ProxyGenerator().ProxyBuilder
-                .CreateInterfaceProxyTypeWithTargetInterface(typeof(IResolutionRoot), new[] { typeof(TInterface), typeof(IFactoryProxy) }, ProxyGenerationOptions.Default);
-            var result = syntax.To(proxy2);
+            var proxy = new ProxyGenerator().ProxyBuilder.CreateInterfaceProxyTypeWithoutTarget(
+                typeof(TInterface),
+                new[] { typeof(IFactoryProxy) },
+                ProxyGenerationOptions.Default);
+            var result = syntax.To(proxy);
             result.WithParameter(new ProxyTargetParameter());
             return result;
         }
     }
 }
+#endif

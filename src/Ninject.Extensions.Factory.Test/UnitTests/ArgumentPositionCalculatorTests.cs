@@ -19,6 +19,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+#if !NO_MOQ
 namespace Ninject.Extensions.Factory.UnitTests
 {
     using System;
@@ -195,3 +196,4 @@ namespace Ninject.Extensions.Factory.UnitTests
         }
     }
 }
+#endif

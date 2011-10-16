@@ -1,25 +1,15 @@
 namespace Ninject.Tests.Integration
 {
-    using System.Drawing;
-
     public class CustomizableSword : ICustomizableWeapon
     {
-        public CustomizableSword(Color color, int width, int length)
+        public CustomizableSword(string name, int width, int length)
         {
-            this.Color = color;
+            this.Name = name;
             this.Length = length;
             this.Width = width;
         }
 
-        public string Name
-        {
-            get
-            {
-                return "CustomizableSword";
-            }
-        }
-
-        public Color Color { get; private set; }
+        public string Name { get; set; }
 
         public int Width { get; private set; }
 

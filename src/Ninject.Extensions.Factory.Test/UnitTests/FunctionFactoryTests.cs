@@ -19,12 +19,11 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+#if !NO_MOQ
 namespace Ninject.Extensions.Factory.UnitTests
 {
     using FluentAssertions;
     using Moq;
-    using Ninject.Activation;
-    using Ninject.Parameters;
     using Ninject.Syntax;
     using Xunit;
     using Xunit.Extensions;
@@ -41,9 +40,12 @@ namespace Ninject.Extensions.Factory.UnitTests
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
+        [InlineData(4)]
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         [InlineData(5)]
         [InlineData(10)]
         [InlineData(17)]
+#endif
         public void GetMethodInfo(int argumentCount)
         {
             var mi = this.testee.GetMethodInfo(argumentCount);
@@ -56,16 +58,12 @@ namespace Ninject.Extensions.Factory.UnitTests
         {
             const int ExpectedResult = 1; 
             var resolutionRootMock = new Mock<IResolutionRoot>();
-            var request = new Mock<IRequest>().Object;
-            resolutionRootMock
-                .Setup(resolutionRoot => resolutionRoot.CreateRequest(
-                    typeof(int), null, new IParameter[0], false, true))
-                .Returns(request);
-            resolutionRootMock.Setup(resolutionRoot => resolutionRoot.Resolve(request)).Returns(new[] { (object)ExpectedResult });
+            resolutionRootMock.SetupGet(ExpectedResult);
 
             var result = this.testee.Create<int>(resolutionRootMock.Object)();
 
             result.Should().Be(ExpectedResult);
+            resolutionRootMock.VerifyParameters(new object[0]);
         }
 
         [Fact]
@@ -120,6 +118,7 @@ namespace Ninject.Extensions.Factory.UnitTests
             resolutionRootMock.VerifyParameters((ulong)20, "w", (byte)4, (ushort)8);
         }
 
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         [Fact]
         public void Create5()
         {
@@ -275,5 +274,7 @@ namespace Ninject.Extensions.Factory.UnitTests
             result.Should().Be(ExpectedResult);
             resolutionRootMock.VerifyParameters((ulong)20, "w", (byte)4, (ushort)8, (long)10, (uint)12, 'c', (sbyte)-6, (short)14, "re", 'o', (ulong)16, (byte)18, (sbyte)22, (uint)24, (long)26);
         }
+#endif
     }
 }
+#endif

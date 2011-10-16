@@ -1,5 +1,0 @@
-C:\Projects\Ninject\ninject.extensions.factory\src\Ninject.Extensions.Factory.Test\obj\Debug\ResolveAssemblyReference.cache
-C:\Projects\Ninject\ninject.extensions.factory\build\debug\Ninject.Extensions.Factory.Test.dll
-C:\Projects\Ninject\ninject.extensions.factory\build\debug\Ninject.Extensions.Factory.Test.pdb
-C:\Projects\Ninject\ninject.extensions.factory\src\Ninject.Extensions.Factory.Test\obj\Debug\Ninject.Extensions.Factory.Test.dll
-C:\Projects\Ninject\ninject.extensions.factory\src\Ninject.Extensions.Factory.Test\obj\Debug\Ninject.Extensions.Factory.Test.pdb

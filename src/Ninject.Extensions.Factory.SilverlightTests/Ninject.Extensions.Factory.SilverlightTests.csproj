@@ -56,7 +56,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT NO_ASSEMBLY_SCANNING</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -73,8 +73,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\lib\Castle-DynamicProxy\silverlight-4.0\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions.Silverlight">
       <HintPath>..\..\tools\FluentAssertions\Silverlight-4.0\FluentAssertions.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq.Silverlight">
+      <HintPath>..\..\tools\moq\Silverlight4\Moq.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\lib\Ninject\silverlight-4.0\Ninject.dll</HintPath>
@@ -92,11 +98,71 @@
     <Reference Include="xunit-silverlight">
       <HintPath>..\..\tools\xunit.sl\Silverlight-4.0\xunit-silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="xunit.extensions-silverlight">
+      <HintPath>..\..\tools\xunit.sl\Silverlight-4.0\xunit.extensions-silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="xunit.runner.silverlight">
       <HintPath>..\..\tools\xunit.sl\Silverlight-4.0\xunit.runner.silverlight.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\FactoryTests.cs">
+      <Link>FactoryTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\ClassWithFunc.cs">
+      <Link>Fakes\ClassWithFunc.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\ClassWithLazy.cs">
+      <Link>Fakes\ClassWithLazy.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\ClassWithParameterizedFunc.cs">
+      <Link>Fakes\ClassWithParameterizedFunc.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\CustomizableSword.cs">
+      <Link>Fakes\CustomizableSword.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\Dagger.cs">
+      <Link>Fakes\Dagger.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\FuncOverloadTestFake.cs">
+      <Link>Fakes\FuncOverloadTestFake.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\ICustomizableWeapon.cs">
+      <Link>Fakes\ICustomizableWeapon.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\IWeapon.cs">
+      <Link>Fakes\IWeapon.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\IWeaponFactory.cs">
+      <Link>Fakes\IWeaponFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\Sword.cs">
+      <Link>Fakes\Sword.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\FuncTests.cs">
+      <Link>FuncTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\ArgumentPositionCalculatorTests.cs">
+      <Link>UnitTests\ArgumentPositionCalculatorTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\FactoryInterceptorTests.cs">
+      <Link>UnitTests\FactoryInterceptorTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\FuncConstructorArgumentTests.cs">
+      <Link>UnitTests\FuncConstructorArgumentTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\FuncProviderTests.cs">
+      <Link>UnitTests\FuncProviderTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\FunctionFactoryTests.cs">
+      <Link>UnitTests\FunctionFactoryTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\IResolutionRootMockExtensions.cs">
+      <Link>UnitTests\IResolutionRootMockExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\ProxyTargetParameterTests.cs">
+      <Link>UnitTests\ProxyTargetParameterTests.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>

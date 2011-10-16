@@ -19,6 +19,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+#if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
 namespace Ninject.Extensions.Factory
 {
     using Castle.DynamicProxy;
@@ -69,3 +70,4 @@ namespace Ninject.Extensions.Factory
         }
     }
 }
+#endif

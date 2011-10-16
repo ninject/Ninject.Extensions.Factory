@@ -19,6 +19,8 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+#if !NO_MOQ
+#if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
 namespace Ninject.Extensions.Factory.UnitTests
 {
     using FluentAssertions;
@@ -78,3 +80,5 @@ namespace Ninject.Extensions.Factory.UnitTests
         }
     }
 }
+#endif
+#endif

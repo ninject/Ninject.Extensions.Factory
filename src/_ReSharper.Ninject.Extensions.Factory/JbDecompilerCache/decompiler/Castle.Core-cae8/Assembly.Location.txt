@@ -1,1 +1,0 @@
-﻿C:\Projects\Ninject\ninject.extensions.factory\lib\Castle-DynamicProxy\net-4.0\Castle.Core.dll

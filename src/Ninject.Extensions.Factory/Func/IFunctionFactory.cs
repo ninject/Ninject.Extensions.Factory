@@ -97,6 +97,7 @@ namespace Ninject.Extensions.Factory
         Func<TArg1, TArg2, TArg3, TArg4, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TService>(IResolutionRoot resolutionRoot);
 
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         /// <summary>
         /// Creates a new Func that creates a new TService instance using the specified resolution root.
         /// </summary>
@@ -354,5 +355,6 @@ namespace Ninject.Extensions.Factory
         /// </returns>
         Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TArg16, TService> 
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TArg16, TService>(IResolutionRoot resolutionRoot);
+#endif
     }
 }

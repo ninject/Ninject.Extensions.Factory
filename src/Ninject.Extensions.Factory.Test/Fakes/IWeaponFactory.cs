@@ -21,8 +21,6 @@
 
 namespace Ninject.Extensions.Factory.Fakes
 {
-    using System.Drawing;
-
     using Ninject.Tests.Fakes;
     using Ninject.Tests.Integration;
 
@@ -30,8 +28,8 @@ namespace Ninject.Extensions.Factory.Fakes
     {
         IWeapon CreateWeapon();
 
-        ICustomizableWeapon CreateCustomizableWeapon(int length, Color color, int width);
+        ICustomizableWeapon CreateCustomizableWeapon(int length, string name, int width);
 
-        ICustomizableWeapon CreateCustomizableWeapon(Color color, int width);
+        ICustomizableWeapon CreateCustomizableWeapon(string name, int width);
     }
 }

@@ -23,7 +23,9 @@ namespace Ninject.Extensions.Factory
 {
     using System;
 
+#if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
     using Castle.DynamicProxy;
+#endif
 
     using Ninject.Activation;
     using Ninject.Modules;
@@ -41,15 +43,17 @@ namespace Ninject.Extensions.Factory
         {
             this.Bind<FuncProvider>().ToSelf().InSingletonScope();
             this.Bind<IFunctionFactory>().To<FunctionFactory>();
+#if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
             this.Bind<IInterceptor>().To<FactoryInterceptor>()
                 .When(request => typeof(IFactoryProxy).IsAssignableFrom(request.Target.Member.ReflectedType));
+#endif
 
             this.Bind(typeof(Func<>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
             this.Bind(typeof(Func<,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
             this.Bind(typeof(Func<,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
             this.Bind(typeof(Func<,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
             this.Bind(typeof(Func<,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-#if !NET_35
+#if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
             this.Bind(typeof(Func<,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
             this.Bind(typeof(Func<,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
             this.Bind(typeof(Func<,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
