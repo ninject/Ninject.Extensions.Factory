@@ -48,48 +48,25 @@ namespace Ninject.Extensions.Factory
                 .When(request => typeof(IFactoryProxy).IsAssignableFrom(request.Target.Member.ReflectedType));
 #endif
 
-            this.Bind(typeof(Func<>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
+            this.Bind(typeof(Func<>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,>)).ToProvider<FuncProvider>();
 #if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
-            this.Bind(typeof(Func<,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,,,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
-            this.Bind(typeof(Func<,,,,,,,,,,,,,,,,>)).ToProvider<FuncProvider>().When(VerifyFactoryFunction);
+            this.Bind(typeof(Func<,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,,,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,,,,,,,,,>)).ToProvider<FuncProvider>();
+            this.Bind(typeof(Func<,,,,,,,,,,,,,,,,>)).ToProvider<FuncProvider>();
 #endif
-        }
-
-        /// <summary>
-        /// Verifies that the Func can be resolved and be used as factory Func.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>True if the return value can be resolved.</returns>
-        private static bool VerifyFactoryFunction(IRequest request)
-        {
-            var genericArguments = request.Service.GetGenericArguments();
-            var instanceType = genericArguments[genericArguments.Length - 1];
-            return request.ParentContext.Kernel.CanResolve(new Request(instanceType, null, new IParameter[0], null, false, true))
-                   || TypeIsSelfBindable(instanceType);
-        }
-
-        /// <summary>
-        /// Checks if the service type is self bindable.
-        /// </summary>
-        /// <param name="service">The service type.</param>
-        /// <returns>True if the service type is self bindable.</returns>
-        private static bool TypeIsSelfBindable(Type service)
-        {
-            return !service.IsInterface && !service.IsAbstract && !service.IsValueType && service != typeof(string) && !service.ContainsGenericParameters;
         }
     }
 }
