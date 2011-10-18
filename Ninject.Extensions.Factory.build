@@ -7,7 +7,7 @@
 	<property name="product.description" value="Factory extension for Ninject" overwrite="false"/>
 	<property name="product.platforms" value="net-3.5,net-4.0,silverlight-4.0,silverlight-3.0,silverlight-2.0,silverlight-4.0-wp7,mono-2.0,netcf-3.5"  overwrite="false"/>
 	<property name="product.buildserverPlatforms" value="net-3.5,net-4.0,silverlight-4.0,silverlight-3.0,silverlight-2.0,mono-2.0,netcf-3.5"  overwrite="false"/>
-	<property name="dependencies" value="Ninject,Ninject.Extensions.ContextPreservation"  overwrite="false"/>
+	<property name="dependencies" value="Ninject"  overwrite="false"/>
 
 	<include buildfile="Ninject.include" />
 	<target name="all" depends="core test silverlight-test"/>
