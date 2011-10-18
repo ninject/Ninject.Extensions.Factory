@@ -27,8 +27,6 @@ namespace Ninject.Extensions.Factory
     using FluentAssertions;
 
     using Ninject.Extensions.Factory.Fakes;
-    using Ninject.Tests.Fakes;
-    using Ninject.Tests.Integration;
 
     using Xunit;
 

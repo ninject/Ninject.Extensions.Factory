@@ -21,9 +21,6 @@
 
 namespace Ninject.Extensions.Factory.Fakes
 {
-    using Ninject.Tests.Fakes;
-    using Ninject.Tests.Integration;
-
     public interface IWeaponFactory
     {
         IWeapon CreateWeapon();
