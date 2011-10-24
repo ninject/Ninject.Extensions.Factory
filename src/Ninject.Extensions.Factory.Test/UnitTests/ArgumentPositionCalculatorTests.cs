@@ -51,7 +51,7 @@ namespace Ninject.Extensions.Factory.UnitTests
             var context = CreateContext();
             var target = CreateTarget(typeof(int), "x");
 
-            var value = this.testee.GetPositionOfFuncConstructorAgument(funcConstructorArgument, context, target);
+            var value = this.testee.GetPositionOfFuncConstructorArgument(funcConstructorArgument, context, target);
 
             value.Should().Be(-1);
         }
@@ -63,7 +63,7 @@ namespace Ninject.Extensions.Factory.UnitTests
             var context = CreateContext(funcConstructorArgument);
             var target = CreateTarget(typeof(int), "x");
 
-            var value = this.testee.GetPositionOfFuncConstructorAgument(funcConstructorArgument, context, target);
+            var value = this.testee.GetPositionOfFuncConstructorArgument(funcConstructorArgument, context, target);
 
             value.Should().Be(0);
         }
@@ -84,7 +84,7 @@ namespace Ninject.Extensions.Factory.UnitTests
                 new FuncConstructorArgument(typeof(int), 2, null));
             var target = CreateTarget(typeof(int), "x");
 
-            var value = this.testee.GetPositionOfFuncConstructorAgument(funcConstructorArgument, context, target);
+            var value = this.testee.GetPositionOfFuncConstructorArgument(funcConstructorArgument, context, target);
 
             value.Should().Be(3);
         }
@@ -100,7 +100,7 @@ namespace Ninject.Extensions.Factory.UnitTests
             var target = CreateTarget(typeof(int), "x");
             constsuctorArgumentMock.Setup(constsuctorArgument => constsuctorArgument.AppliesToTarget(context, target)).Returns(true);
 
-            var value = this.testee.GetPositionOfFuncConstructorAgument(funcConstructorArgument, context, target);
+            var value = this.testee.GetPositionOfFuncConstructorArgument(funcConstructorArgument, context, target);
 
             value.Should().Be(-1);
         }
@@ -116,7 +116,7 @@ namespace Ninject.Extensions.Factory.UnitTests
             var target = CreateTarget(typeof(int), "x");
             constsuctorArgumentMock.Setup(constsuctorArgument => constsuctorArgument.AppliesToTarget(context, target)).Returns(false);
 
-            var value = this.testee.GetPositionOfFuncConstructorAgument(funcConstructorArgument, context, target);
+            var value = this.testee.GetPositionOfFuncConstructorArgument(funcConstructorArgument, context, target);
 
             value.Should().Be(0);
         }

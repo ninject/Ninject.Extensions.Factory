@@ -27,7 +27,7 @@ namespace Ninject.Extensions.Factory
     using System.Reflection;
 
     /// <summary>
-    /// Extensions for ConstructorInfo
+    /// Extensions for <see cref="ConstructorInfo"/>
     /// </summary>
     public static class ConstructorInfoExtensions
     {

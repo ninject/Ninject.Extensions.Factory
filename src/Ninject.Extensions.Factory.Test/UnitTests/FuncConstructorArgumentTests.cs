@@ -126,7 +126,7 @@ namespace Ninject.Extensions.Factory.UnitTests
         private void SetupGetPositionForCurrentInstance(ITarget target, IContext context, int position)
         {
             this.argumentPositionCalculatorMock
-                .Setup(argumentPositionCalculator => argumentPositionCalculator.GetPositionOfFuncConstructorAgument(this.testee, context, target))
+                .Setup(argumentPositionCalculator => argumentPositionCalculator.GetPositionOfFuncConstructorArgument(this.testee, context, target))
                 .Returns(position);
         }
     }

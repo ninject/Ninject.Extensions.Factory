@@ -34,18 +34,18 @@ namespace Ninject.Extensions.Factory
     public class ArgumentPositionCalculator : IArgumentPositionCalculator
     {
         /// <summary>
-        /// Gets the position of the specified FuncConstructorArgument relative to the
-        /// other FuncConstructorArgument of the same type in the specified context.
+        /// Gets the position of the specified <see cref="FuncConstructorArgument"/> relative to the
+        /// other <see cref="FuncConstructorArgument"/> of the same type in the specified context.
         /// </summary>
         /// <param name="argument">The argument for which the position is calculated.</param>
         /// <param name="context">The context of the argument.</param>
         /// <param name="target">The target.</param>
         /// <returns>
         ///     -1 if the parameter does not exist in the context or if another constructor argument applies for the target.
-        ///     Otherwise the position of the specified FuncConstructorArgument within the other FuncConstructorArgument of the same type
-        ///     contained in context.Parameters.
+        ///     Otherwise the position of the specified <see cref="FuncConstructorArgument"/> within the other <see cref="FuncConstructorArgument"/> 
+        ///     of the same type contained in context.Parameters.
         /// </returns>
-        public int GetPositionOfFuncConstructorAgument(FuncConstructorArgument argument, IContext context, ITarget target)
+        public int GetPositionOfFuncConstructorArgument(FuncConstructorArgument argument, IContext context, ITarget target)
         {
             int currentPosition = 0;
             int position = -1;
@@ -83,11 +83,11 @@ namespace Ninject.Extensions.Factory
         /// type of the method containing the target. Parameters that apply to other ConstructorArguments are ignored.
         /// </summary>
         /// <param name="context">The current context.</param>
-        /// <param name="target">The target for hich the position is calculated.</param>
+        /// <param name="target">The target for which the position is calculated.</param>
         /// <returns>
         ///     -1 if the target is not found of the parameter applies to another constructor argument.
         ///     Otherwise the position of the target relative to the other parameters of the method that have the same type and
-        ///     do not apply to another ConstructorArgument.
+        ///     do not apply to another <see cref="ConstructorArgument"/>.
         /// </returns>
         public int GetTargetPosition(IContext context, ITarget target)
         {
@@ -112,11 +112,11 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Checks if an IConstructorArgument with another type than FuncConstructorArgument applies to the target.
+        /// Checks if an <see cref="IConstructorArgument"/> with another type than <see cref="FuncConstructorArgument"/> applies to the target.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="target">The target.</param>
-        /// <returns>True if an IConstructorArgument with another type than FuncConstructorArgument applies to the target.</returns>
+        /// <returns>True if an <see cref="IConstructorArgument"/> with another type than <see cref="FuncConstructorArgument"/> applies to the target.</returns>
         private static bool CheckOtherConstructorArgumentApplies(IContext context, ParameterTarget target)
         {
             return context

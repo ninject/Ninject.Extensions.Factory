@@ -46,7 +46,7 @@ namespace Ninject.Extensions.Factory.UnitTests
         {
             this.funcFactoryMock = new Mock<IFunctionFactory>();
             this.resolutionRoot = new Mock<IResolutionRoot>().Object;
-            this.testee = new FuncProvider(this.funcFactoryMock.Object, this.resolutionRoot);
+            this.testee = new FuncProvider(this.funcFactoryMock.Object, ctx => this.resolutionRoot);
         } 
 
         [Fact]

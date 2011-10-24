@@ -58,24 +58,24 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root. 
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root. 
         /// </summary>
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
-        /// <returns>The new instance of TService created using the resolution root.</returns>
+        /// <returns>The new instance of <typeparamref name="TService"/> created using the resolution root.</returns>
         public Func<TService> Create<TService>(IResolutionRoot resolutionRoot)
         {
             return () => resolutionRoot.Get<TService>();
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TService> Create<TArg1, TService>(IResolutionRoot resolutionRoot)
         {
@@ -84,14 +84,14 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TService> Create<TArg1, TArg2, TService>(IResolutionRoot resolutionRoot)
         {
@@ -101,7 +101,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -109,7 +109,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TService> Create<TArg1, TArg2, TArg3, TService>(IResolutionRoot resolutionRoot)
         {
@@ -120,7 +120,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -129,7 +129,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TService>(IResolutionRoot resolutionRoot)
@@ -144,7 +144,7 @@ namespace Ninject.Extensions.Factory
 
 #if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -154,7 +154,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TService>(IResolutionRoot resolutionRoot)
@@ -169,7 +169,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -180,7 +180,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TService>(IResolutionRoot resolutionRoot)
@@ -196,7 +196,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -208,7 +208,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TService>(IResolutionRoot resolutionRoot)
@@ -225,7 +225,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -238,7 +238,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TService>(IResolutionRoot resolutionRoot)
@@ -256,7 +256,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -270,7 +270,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TService>(IResolutionRoot resolutionRoot)
@@ -289,7 +289,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -304,7 +304,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TService>(IResolutionRoot resolutionRoot)
@@ -324,7 +324,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -340,7 +340,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TService>(IResolutionRoot resolutionRoot)
@@ -361,7 +361,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -378,7 +378,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TService>(IResolutionRoot resolutionRoot)
@@ -400,7 +400,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -418,7 +418,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TService>(IResolutionRoot resolutionRoot)
@@ -441,7 +441,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -460,7 +460,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TService>(IResolutionRoot resolutionRoot)
@@ -484,7 +484,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -504,7 +504,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TService>(IResolutionRoot resolutionRoot)
@@ -529,7 +529,7 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Creates a new Func that creates a new TService instance using the specified resolution root.
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TArg1">The type of the 1st argument.</typeparam>
         /// <typeparam name="TArg2">The type of the 2nd argument.</typeparam>
@@ -550,7 +550,7 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>
-        /// The new instance of TService created using the resolution root.
+        /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TArg16, TService> 
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TArg16, TService>(IResolutionRoot resolutionRoot)

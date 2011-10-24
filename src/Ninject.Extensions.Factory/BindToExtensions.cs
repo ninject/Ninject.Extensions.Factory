@@ -27,7 +27,7 @@ namespace Ninject.Extensions.Factory
     using Ninject.Syntax;
 
     /// <summary>
-    /// Extension methods for IBindingToSyntax
+    /// Extension methods for <see cref="IBindingToSyntax{TInterface}"/>
     /// </summary>
     public static class BindToExtensions
     {
@@ -36,7 +36,7 @@ namespace Ninject.Extensions.Factory
         /// </summary>
         /// <typeparam name="TInterface">The type of the interface.</typeparam>
         /// <param name="syntax">The syntax.</param>
-        /// <returns>The IBindingWhenInNamedWithOrOnSyntax to configure more things for the binding.</returns>
+        /// <returns>The <see cref="IBindingWhenInNamedWithOrOnSyntax{TInterface}"/> to configure more things for the binding.</returns>
         public static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(this IBindingToSyntax<TInterface> syntax)
             where TInterface : class
         {

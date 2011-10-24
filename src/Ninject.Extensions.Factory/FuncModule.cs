@@ -22,6 +22,7 @@
 namespace Ninject.Extensions.Factory
 {
     using System;
+    using System.Linq;
 
 #if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
     using Castle.DynamicProxy;
@@ -29,7 +30,7 @@ namespace Ninject.Extensions.Factory
 
     using Ninject.Activation;
     using Ninject.Modules;
-    using Ninject.Parameters;
+    using Ninject.Syntax;
 
     /// <summary>
     /// Defines the bindings for this extension.
@@ -41,6 +42,11 @@ namespace Ninject.Extensions.Factory
         /// </summary>
         public override void Load()
         {
+            if (!this.Kernel.GetBindings(typeof(Func<IContext, IResolutionRoot>)).Any())
+            {
+                this.Bind<Func<IContext, IResolutionRoot>>().ToMethod(ctx => context => context.Kernel);
+            }
+
             this.Bind<FuncProvider>().ToSelf().InSingletonScope();
             this.Bind<IFunctionFactory>().To<FunctionFactory>();
 #if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO

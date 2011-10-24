@@ -27,7 +27,7 @@ namespace Ninject.Extensions.Factory
     using Ninject.Planning.Targets;
 
     /// <summary>
-    /// The IConstructorArgument used to define constructor arguments for Func bindings.
+    /// The <see cref="IConstructorArgument"/> used to define constructor arguments for Func bindings.
     /// </summary>
     public class FuncConstructorArgument : IConstructorArgument
     {
@@ -75,7 +75,7 @@ namespace Ninject.Extensions.Factory
         /// <summary>
         /// Gets a value indicating whether the parameter should be inherited into child requests.
         /// </summary>
-        /// <value>Always false.</value>
+        /// <value>Always <c>false</c>.</value>
         public bool ShouldInherit
         {
             get
@@ -111,10 +111,10 @@ namespace Ninject.Extensions.Factory
         /// <param name="context">The context.</param>
         /// <param name="target">The target.</param>
         /// <returns>
-        /// Tre if the parameter applies in the specified context to the specified target.
+        /// True if the parameter applies in the specified context to the specified target.
         /// </returns>
         /// <remarks>
-        /// Only one parameter may return true.
+        /// Only one parameter may return <c>true</c>.
         /// </remarks>
         public bool AppliesToTarget(IContext context, ITarget target)
         {
@@ -123,7 +123,7 @@ namespace Ninject.Extensions.Factory
                 return false;
             }
 
-            int position = this.argumentPositionCalculator.GetPositionOfFuncConstructorAgument(this, context, target);
+            int position = this.argumentPositionCalculator.GetPositionOfFuncConstructorArgument(this, context, target);
             return position > -1 && this.argumentPositionCalculator.GetTargetPosition(context, target) == position;
         }       
     }

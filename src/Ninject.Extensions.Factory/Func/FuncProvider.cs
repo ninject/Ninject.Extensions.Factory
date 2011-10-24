@@ -37,19 +37,19 @@ namespace Ninject.Extensions.Factory
         private readonly IFunctionFactory functionFactory;
 
         /// <summary>
-        /// The resolution rootvused to create new instances.
+        /// The resolution root used to create new instances.
         /// </summary>
-        private readonly IResolutionRoot resolutionRoot;
+        private readonly Func<IContext, IResolutionRoot> resolutionRootRetriever;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FuncProvider"/> class.
         /// </summary>
         /// <param name="functionFactory">The function factory.</param>
-        /// <param name="resolutionRoot">The resolution root.</param>
-        public FuncProvider(IFunctionFactory functionFactory, IResolutionRoot resolutionRoot)
+        /// <param name="resolutionRootRetriever">Func to get the resolution root from a context.</param>
+        public FuncProvider(IFunctionFactory functionFactory, Func<IContext, IResolutionRoot> resolutionRootRetriever)
         {
             this.functionFactory = functionFactory;
-            this.resolutionRoot = resolutionRoot;
+            this.resolutionRootRetriever = resolutionRootRetriever;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Ninject.Extensions.Factory
             var genericArguments = context.GenericArguments;
             var mi = this.functionFactory.GetMethodInfo(genericArguments.Length);
             var createMethod = mi.MakeGenericMethod(genericArguments);
-            return createMethod.Invoke(this.functionFactory, new object[] { this.resolutionRoot });       
+            return createMethod.Invoke(this.functionFactory, new object[] { this.resolutionRootRetriever(context) });       
         }
     }
 }

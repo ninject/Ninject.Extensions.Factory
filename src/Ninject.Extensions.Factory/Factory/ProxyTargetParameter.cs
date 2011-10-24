@@ -27,7 +27,7 @@ namespace Ninject.Extensions.Factory
     using Ninject.Planning.Targets;
 
     /// <summary>
-    /// Used to define that the target parameter of the factory interception is null.
+    /// Used to define that the target parameter of the factory interception is <c>null</c>.
     /// </summary>
     public class ProxyTargetParameter : Parameter, IConstructorArgument
     {
@@ -48,7 +48,7 @@ namespace Ninject.Extensions.Factory
         /// True if the parameter applies in the specified context to the specified target.
         /// </returns>
         /// <remarks>
-        /// Only one parameter may return true.
+        /// Only one parameter may return <c>true</c>.
         /// </remarks>
         public bool AppliesToTarget(IContext context, ITarget target)
         {
