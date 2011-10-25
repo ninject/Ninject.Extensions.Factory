@@ -23,6 +23,7 @@
 namespace Ninject.Extensions.Factory
 {
     using System;
+    using System.Linq;
 
     using FluentAssertions;
 
@@ -48,15 +49,99 @@ namespace Ninject.Extensions.Factory
         }
  
         [Fact]
-        public void BindToFactory()
+        public void SingleBinding()
         {
             this.kernel.Bind<IWeapon>().To<Sword>();
             this.kernel.Bind<IWeaponFactory>().ToFactory();
+            
             var weapon = this.kernel.Get<IWeaponFactory>().CreateWeapon();
 
             weapon.Should().BeOfType<Sword>();
         }
 
+        /*
+        [Fact]
+        public void NamedBinding()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>().Named("Sword");
+            this.kernel.Bind<IWeapon>().To<Dagger>().Named("Dagger");
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+            
+            var weapon = this.kernel.Get<IWeaponFactory>().GetSword();
+
+            weapon.Should().BeOfType<Sword>();
+        }*/
+
+        [Fact]
+        public void GetEnumerable()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+            
+            var weapons = this.kernel.Get<IWeaponFactory>().CreateAllWeaponsEnumerable();
+
+            weapons.Should().HaveCount(2);
+            weapons.OfType<Sword>().Should().HaveCount(1);
+            weapons.OfType<Dagger>().Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void GetCollection()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+
+            var weapons = this.kernel.Get<IWeaponFactory>().CreateAllWeaponsCollection();
+
+            weapons.Should().HaveCount(2);
+            weapons.OfType<Sword>().Should().HaveCount(1);
+            weapons.OfType<Dagger>().Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void GetIList()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+
+            var weapons = this.kernel.Get<IWeaponFactory>().CreateAllWeaponsIList();
+
+            weapons.Should().HaveCount(2);
+            weapons.OfType<Sword>().Should().HaveCount(1);
+            weapons.OfType<Dagger>().Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void GetList()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+
+            var weapons = this.kernel.Get<IWeaponFactory>().CreateAllWeaponsList();
+
+            weapons.Should().HaveCount(2);
+            weapons.OfType<Sword>().Should().HaveCount(1);
+            weapons.OfType<Dagger>().Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void GetArray()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+
+            var weapons = this.kernel.Get<IWeaponFactory>().CreateAllWeaponsArray();
+
+            weapons.Should().HaveCount(2);
+            weapons.OfType<Sword>().Should().HaveCount(1);
+            weapons.OfType<Dagger>().Should().HaveCount(1);
+        }
+        
         [Fact]
         public void BindToFactoryWithArguments()
         {

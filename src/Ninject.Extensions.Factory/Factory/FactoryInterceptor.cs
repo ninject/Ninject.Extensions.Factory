@@ -22,6 +22,10 @@
 #if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
 namespace Ninject.Extensions.Factory
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Castle.DynamicProxy;
 
     using Ninject.Parameters;
@@ -66,7 +70,48 @@ namespace Ninject.Extensions.Factory
                 constructorArguments[i] = new ConstructorArgument(parameters[i].Name, invocation.Arguments[i]);
             }
 
+            if (methodInfo.ReturnType.IsGenericType)
+            {
+                var genericType = methodInfo.ReturnType.GetGenericTypeDefinition();
+                var argumentType = methodInfo.ReturnType.GetGenericArguments()[0];
+                if (genericType == typeof(IEnumerable<>) || 
+                    genericType == typeof(ICollection<>) || 
+                    genericType == typeof(IList<>) || 
+                    genericType == typeof(List<>))
+                {
+                    var list = this.GetList(constructorArguments, argumentType);
+
+                    invocation.ReturnValue = list;
+                    return;
+                }
+            }
+
+            if (methodInfo.ReturnType.IsArray)
+            {
+                var argumentType = methodInfo.ReturnType.GetElementType();
+                var list = this.GetList(constructorArguments, argumentType);
+                invocation.ReturnValue = typeof(Enumerable)
+                    .GetMethod("ToArray")
+                    .MakeGenericMethod(argumentType)
+                    .Invoke(null, new[] { list });
+                return;
+            }
+
             invocation.ReturnValue = this.resolutionRoot.Get(methodInfo.ReturnType, constructorArguments);
+        }
+
+        private object GetList(ConstructorArgument[] constructorArguments, Type argumentType)
+        {
+            var listType = typeof(List<>).MakeGenericType(argumentType);
+            var list = listType.GetConstructor(new Type[0]).Invoke(new object[0]);
+            var addMethod = listType.GetMethod("Add");
+
+            foreach (var value in this.resolutionRoot.GetAll(argumentType, constructorArguments))
+            {
+                addMethod.Invoke(list, new[] { value });
+            }
+
+            return list;
         }
     }
 }

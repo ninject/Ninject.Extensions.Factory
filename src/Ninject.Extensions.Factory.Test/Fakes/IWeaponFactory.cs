@@ -21,6 +21,8 @@
 
 namespace Ninject.Extensions.Factory.Fakes
 {
+    using System.Collections.Generic;
+
     public interface IWeaponFactory
     {
         IWeapon CreateWeapon();
@@ -28,5 +30,17 @@ namespace Ninject.Extensions.Factory.Fakes
         ICustomizableWeapon CreateCustomizableWeapon(int length, string name, int width);
 
         ICustomizableWeapon CreateCustomizableWeapon(string name, int width);
+
+        IWeapon GetSword();
+
+        IEnumerable<IWeapon> CreateAllWeaponsEnumerable();
+
+        ICollection<IWeapon> CreateAllWeaponsCollection();
+
+        IList<IWeapon> CreateAllWeaponsIList();
+
+        List<IWeapon> CreateAllWeaponsList();
+
+        IWeapon[] CreateAllWeaponsArray();
     }
 }
