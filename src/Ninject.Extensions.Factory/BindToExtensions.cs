@@ -22,8 +22,12 @@
 #if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
 namespace Ninject.Extensions.Factory
 {
+    using System;
+
     using Castle.DynamicProxy;
 
+    using Ninject.Activation;
+    using Ninject.Planning.Bindings;
     using Ninject.Syntax;
 
     /// <summary>
@@ -40,12 +44,46 @@ namespace Ninject.Extensions.Factory
         public static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(this IBindingToSyntax<TInterface> syntax)
             where TInterface : class
         {
+            return ToFactory(syntax, ctx => ctx.Kernel.Get<IInstanceProvider>());
+        }
+
+        /// <summary>
+        /// Defines that the interface shall be bound to an automatically created factory proxy.
+        /// </summary>
+        /// <typeparam name="TInterface">The type of the interface.</typeparam>
+        /// <param name="syntax">The syntax.</param>
+        /// <param name="instanceProvider">The instance provider.</param>
+        /// <returns>
+        /// The <see cref="IBindingWhenInNamedWithOrOnSyntax{TInterface}"/> to configure more things for the binding.
+        /// </returns>
+        public static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(this IBindingToSyntax<TInterface> syntax, Func<IInstanceProvider> instanceProvider)
+            where TInterface : class
+        {
+            return ToFactory(syntax, ctx => instanceProvider());
+        }
+
+        /// <summary>
+        /// Defines that the interface shall be bound to an automatically created factory proxy.
+        /// </summary>
+        /// <typeparam name="TInterface">The type of the interface.</typeparam>
+        /// <param name="syntax">The syntax.</param>
+        /// <param name="instanceProvider">The instance provider.</param>
+        /// <returns>
+        /// The <see cref="IBindingWhenInNamedWithOrOnSyntax{TInterface}"/> to configure more things for the binding.
+        /// </returns>
+        private static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(IBindingToSyntax<TInterface> syntax, Func<IContext, IInstanceProvider> instanceProvider) 
+            where TInterface : class
+        {
             var proxy = new ProxyGenerator().ProxyBuilder.CreateInterfaceProxyTypeWithoutTarget(
-                typeof(TInterface),
-                new[] { typeof(IFactoryProxy) },
-                ProxyGenerationOptions.Default);
+                typeof(TInterface), new[] { typeof(IFactoryProxy) }, ProxyGenerationOptions.Default);
             var result = syntax.To(proxy);
             result.WithParameter(new ProxyTargetParameter());
+
+            var binding = syntax.Binding; // Do not pass syntax to the lambda!!! We do not want the lambda referencing the syntax!!!
+            syntax.Kernel.Bind<IInstanceProvider>().ToMethod(instanceProvider)
+                .When(r => r.ParentRequest != null && r.ParentRequest.ParentContext.Binding == binding)
+                .InScope(ctx => binding);
+
             return result;
         }
     }

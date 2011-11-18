@@ -118,6 +118,9 @@
     <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\ClassWithParameterizedFunc.cs">
       <Link>Fakes\ClassWithParameterizedFunc.cs</Link>
     </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\CustomizableDagger.cs">
+      <Link>Fakes\CustomizableDagger.cs</Link>
+    </Compile>
     <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\CustomizableSword.cs">
       <Link>Fakes\CustomizableSword.cs</Link>
     </Compile>
@@ -127,8 +130,14 @@
     <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\FuncOverloadTestFake.cs">
       <Link>Fakes\FuncOverloadTestFake.cs</Link>
     </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\FuncOverloadTestImplementationFake.cs">
+      <Link>Fakes\FuncOverloadTestImplementationFake.cs</Link>
+    </Compile>
     <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\ICustomizableWeapon.cs">
       <Link>Fakes\ICustomizableWeapon.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\ISpecialWeaponFactory.cs">
+      <Link>Fakes\ISpecialWeaponFactory.cs</Link>
     </Compile>
     <Compile Include="..\Ninject.Extensions.Factory.Test\Fakes\IWeapon.cs">
       <Link>Fakes\IWeapon.cs</Link>
@@ -157,11 +166,20 @@
     <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\FunctionFactoryTests.cs">
       <Link>UnitTests\FunctionFactoryTests.cs</Link>
     </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\InstanceResolverTests.cs">
+      <Link>UnitTests\InstanceResolverTests.cs</Link>
+    </Compile>
     <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\IResolutionRootMockExtensions.cs">
       <Link>UnitTests\IResolutionRootMockExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\ProxyTargetParameterTests.cs">
       <Link>UnitTests\ProxyTargetParameterTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\StandardInstanceProviderDefaultImplementationTests.cs">
+      <Link>UnitTests\StandardInstanceProviderDefaultImplementationTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Ninject.Extensions.Factory.Test\UnitTests\StandardInstanceProviderTests.cs">
+      <Link>UnitTests\StandardInstanceProviderTests.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

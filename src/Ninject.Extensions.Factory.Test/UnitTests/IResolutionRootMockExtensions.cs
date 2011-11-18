@@ -30,17 +30,64 @@ namespace Ninject.Extensions.Factory.UnitTests
 
     using Ninject.Activation;
     using Ninject.Parameters;
+    using Ninject.Planning.Bindings;
     using Ninject.Syntax;
 
     public static class IResolutionRootMockExtensions
     {
         public static void SetupGet<T>(this Mock<IResolutionRoot> resolutionRootMock, T result)
         {
+            SetupGet(resolutionRootMock, null, result);
+        }
+
+        public static void SetupGetThrowing<T>(this Mock<IResolutionRoot> resolutionRootMock, Func<IBindingMetadata, bool> constraint)
+        {
             var request = new Mock<IRequest>().Object;
             resolutionRootMock
-                .Setup(resolutionRoot => resolutionRoot.CreateRequest(typeof(T), null, It.IsAny<IEnumerable<IParameter>>(), false, true))
+                .Setup(resolutionRoot => resolutionRoot.CreateRequest(typeof(T), constraint, It.IsAny<IEnumerable<IParameter>>(), false, true))
+                .Returns(request);
+            resolutionRootMock.Setup(resolutionRoot => resolutionRoot.Resolve(request)).Throws<ActivationException>();
+        }
+        
+        public static void SetupGet<T>(this Mock<IResolutionRoot> resolutionRootMock, Func<IBindingMetadata, bool> constraint, T result)
+        {
+            var request = new Mock<IRequest>().Object;
+            resolutionRootMock
+                .Setup(resolutionRoot => resolutionRoot.CreateRequest(typeof(T), constraint, It.IsAny<IEnumerable<IParameter>>(), false, true))
                 .Returns(request);
             resolutionRootMock.Setup(resolutionRoot => resolutionRoot.Resolve(request)).Returns(new[] { (object)result });
+        }
+
+        public static void SetupTryGet<T>(this Mock<IResolutionRoot> resolutionRootMock, Func<IBindingMetadata, bool> constraint, T result)
+        {
+            var request = new Mock<IRequest>().Object;
+            resolutionRootMock
+                .Setup(resolutionRoot => resolutionRoot.CreateRequest(typeof(T), constraint, It.IsAny<IEnumerable<IParameter>>(), true, true))
+                .Returns(request);
+            resolutionRootMock.Setup(resolutionRoot => resolutionRoot.Resolve(request)).Returns(new[] { (object)result });
+        }
+
+        public static void SetupGetAll<T>(this Mock<IResolutionRoot> resolutionRootMock, IEnumerable<T> result)
+        {
+            SetupGetAll(resolutionRootMock, null, result);
+        }
+
+        public static void SetupGetAllThrowing<T>(this Mock<IResolutionRoot> resolutionRootMock, Func<IBindingMetadata, bool> constraint)
+        {
+            var request = new Mock<IRequest>().Object;
+            resolutionRootMock
+                .Setup(resolutionRoot => resolutionRoot.CreateRequest(typeof(T), constraint, It.IsAny<IEnumerable<IParameter>>(), true, false))
+                .Returns(request);
+            resolutionRootMock.Setup(resolutionRoot => resolutionRoot.Resolve(request)).Throws<ActivationException>();
+        }
+
+        public static void SetupGetAll<T>(this Mock<IResolutionRoot> resolutionRootMock, Func<IBindingMetadata, bool> constraint, IEnumerable<T> result)
+        {
+            var request = new Mock<IRequest>().Object;
+            resolutionRootMock
+                .Setup(resolutionRoot => resolutionRoot.CreateRequest(typeof(T), constraint, It.IsAny<IEnumerable<IParameter>>(), true, false))
+                .Returns(request);
+            resolutionRootMock.Setup(resolutionRoot => resolutionRoot.Resolve(request)).Returns(result.Cast<object>());
         }
 
         public static void VerifyParameters(this Mock<IResolutionRoot> resolutionRootMock, params ConstructorArgument[] arguments)

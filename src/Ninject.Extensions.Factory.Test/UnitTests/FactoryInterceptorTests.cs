@@ -20,18 +20,13 @@
 //-------------------------------------------------------------------------------
 
 #if !NO_MOQ
-#if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
+#if !SILVERLIGHT && !WINDOWS_PHONE && !NETCF_35 && !MONO
 namespace Ninject.Extensions.Factory.UnitTests
 {
     using Castle.DynamicProxy;
-
     using FluentAssertions;
-
     using Moq;
-
-    using Ninject.Parameters;
     using Ninject.Syntax;
-
     using Xunit;
 
     public class FactoryInterceptorTests
@@ -40,24 +35,26 @@ namespace Ninject.Extensions.Factory.UnitTests
 
         private readonly FactoryInterceptor testee;
 
+        private readonly Mock<IInstanceProvider> instanceProviderMock;
+
         public FactoryInterceptorTests()
         {
             this.resolutionRootMock = new Mock<IResolutionRoot>();
-            this.testee = new FactoryInterceptor(this.resolutionRootMock.Object);
+            this.instanceProviderMock = new Mock<IInstanceProvider>();
+            this.testee = new FactoryInterceptor(this.resolutionRootMock.Object, this.instanceProviderMock.Object);
         }
 
         [Fact]
         public void Intercept()
         {
             var invocation = this.CreateInvocation("TestMethod", 1, "w");
-            this.resolutionRootMock.SetupGet(4);
+            this.instanceProviderMock
+                .Setup(ip => ip.GetInstance(this.testee, invocation.Method, invocation.Arguments))
+                .Returns(4);
 
             this.testee.Intercept(invocation);
 
             invocation.ReturnValue.Should().Be(4);
-            this.resolutionRootMock.VerifyParameters(
-                new ConstructorArgument("arg1", 1),
-                new ConstructorArgument("arg2", "w"));
         }
 
         public int TestMethod(int arg1, string arg2)

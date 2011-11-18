@@ -22,32 +22,30 @@
 #if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
 namespace Ninject.Extensions.Factory
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     using Castle.DynamicProxy;
 
-    using Ninject.Parameters;
+    using Ninject.Extensions.Factory.Factory;
     using Ninject.Syntax;
 
     /// <summary>
     /// Interceptor called by the factory proxies
     /// </summary>
-    public class FactoryInterceptor : IInterceptor
+    public class FactoryInterceptor : InstanceResolver, IInterceptor
     {
         /// <summary>
-        /// The resolution root used to create new instances for the factory.
+        /// The instance provider.
         /// </summary>
-        private readonly IResolutionRoot resolutionRoot;
+        private readonly IInstanceProvider instanceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FactoryInterceptor"/> class.
         /// </summary>
         /// <param name="resolutionRoot">The resolution root used to create new instances for the factory.</param>
-        public FactoryInterceptor(IResolutionRoot resolutionRoot)
+        /// <param name="instanceProvider">The instance provider.</param>
+        public FactoryInterceptor(IResolutionRoot resolutionRoot, IInstanceProvider instanceProvider)
+            : base(resolutionRoot)
         {
-            this.resolutionRoot = resolutionRoot;
+            this.instanceProvider = instanceProvider;
         }
 
         /// <summary>
@@ -56,62 +54,7 @@ namespace Ninject.Extensions.Factory
         /// <param name="invocation">The invocation.</param>
         public void Intercept(IInvocation invocation)
         {
-            var methodInfo = invocation.Method;
-            if (methodInfo.DeclaringType == typeof(IResolutionRoot))
-            {
-                invocation.Proceed();
-                return;
-            }
-
-            var parameters = methodInfo.GetParameters();
-            var constructorArguments = new ConstructorArgument[parameters.Length];
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                constructorArguments[i] = new ConstructorArgument(parameters[i].Name, invocation.Arguments[i]);
-            }
-
-            if (methodInfo.ReturnType.IsGenericType)
-            {
-                var genericType = methodInfo.ReturnType.GetGenericTypeDefinition();
-                var argumentType = methodInfo.ReturnType.GetGenericArguments()[0];
-                if (genericType == typeof(IEnumerable<>) || 
-                    genericType == typeof(ICollection<>) || 
-                    genericType == typeof(IList<>) || 
-                    genericType == typeof(List<>))
-                {
-                    var list = this.GetList(constructorArguments, argumentType);
-
-                    invocation.ReturnValue = list;
-                    return;
-                }
-            }
-
-            if (methodInfo.ReturnType.IsArray)
-            {
-                var argumentType = methodInfo.ReturnType.GetElementType();
-                var list = this.GetList(constructorArguments, argumentType);
-                invocation.ReturnValue = typeof(Enumerable)
-                    .GetMethod("ToArray")
-                    .MakeGenericMethod(argumentType)
-                    .Invoke(null, new[] { list });
-                return;
-            }
-
-            invocation.ReturnValue = this.resolutionRoot.Get(methodInfo.ReturnType, constructorArguments);
-        }
-
-        private object GetList(ConstructorArgument[] constructorArguments, Type argumentType)
-        {
-            var listType = typeof(List<>).MakeGenericType(argumentType);
-            var list = listType.GetConstructor(new Type[0]).Invoke(new object[0]);
-            var addMethod = listType.GetMethod("Add");
-
-            foreach (var value in this.resolutionRoot.GetAll(argumentType, constructorArguments))
-            {
-                addMethod.Invoke(list, new[] { value });
-            }
-
-            return list;
+            invocation.ReturnValue = this.instanceProvider.GetInstance(this, invocation.Method, invocation.Arguments);
         }
     }
 }

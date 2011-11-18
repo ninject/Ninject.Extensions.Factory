@@ -59,7 +59,6 @@ namespace Ninject.Extensions.Factory
             weapon.Should().BeOfType<Sword>();
         }
 
-        /*
         [Fact]
         public void NamedBinding()
         {
@@ -70,8 +69,19 @@ namespace Ninject.Extensions.Factory
             var weapon = this.kernel.Get<IWeaponFactory>().GetSword();
 
             weapon.Should().BeOfType<Sword>();
-        }*/
+        }
 
+        [Fact]
+        public void GetFallback()
+        {
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+            this.kernel.Bind<IWeaponFactory>().ToFactory(() => new StandardInstanceProvider { Fallback = true });
+
+            var weapon = this.kernel.Get<IWeaponFactory>().GetSword();
+
+            weapon.Should().BeOfType<Dagger>();
+        }
+        
         [Fact]
         public void GetEnumerable()
         {
@@ -157,6 +167,57 @@ namespace Ninject.Extensions.Factory
             weapon.Name.Should().Be(Name);
             weapon.Length.Should().Be(Length);
             weapon.Width.Should().Be(Width);
+        }
+
+        [Fact]
+        public void CustomInstanceProviderTest()
+        {
+            const string Name = "theName";
+            const int Length = 1;
+            const int Width = 2;
+
+            this.kernel.Bind<ICustomizableWeapon>().To<CustomizableSword>().Named("sword");
+            this.kernel.Bind<ICustomizableWeapon>().To<CustomizableDagger>().Named("dagger");
+            this.kernel.Bind<ISpecialWeaponFactory>().ToFactory(() => new CustomInstanceProvider());
+
+            var factory = this.kernel.Get<ISpecialWeaponFactory>();
+            var instance = factory.CreateWeapon("sword", Length, Name, Width);
+
+            instance.Should().BeOfType<CustomizableSword>();
+            instance.Name.Should().Be(Name);
+            instance.Length.Should().Be(Length);
+            instance.Width.Should().Be(Width);
+        }
+
+        [Fact]
+        public void DefaultAndCustomInstanceProviderCanBeMixed()
+        {
+            this.kernel.Bind<ICustomizableWeapon>().To<CustomizableSword>().Named("sword");
+            this.kernel.Bind<IWeapon>().To<Sword>();
+
+            this.kernel.Bind<ISpecialWeaponFactory>().ToFactory(() => new CustomInstanceProvider());
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+
+            var factory1 = this.kernel.Get<ISpecialWeaponFactory>();
+            var factory2 = this.kernel.Get<IWeaponFactory>();
+            var instance1 = factory1.CreateWeapon("sword", 1, "a", 2);
+            var instance2 = factory2.CreateWeapon();
+
+            instance1.Should().BeOfType<CustomizableSword>();
+            instance2.Should().BeOfType<Sword>();
+        }
+
+        private class CustomInstanceProvider : StandardInstanceProvider
+        {
+            protected override string GetName(System.Reflection.MethodInfo methodInfo, object[] arguments)
+            {
+                return (string)arguments[0];
+            }
+
+            protected override Parameters.ConstructorArgument[] GetConstructorArguments(System.Reflection.MethodInfo methodInfo, object[] arguments)
+            {
+                return base.GetConstructorArguments(methodInfo, arguments).Skip(1).ToArray();
+            }
         }
     }
 }

@@ -98,11 +98,14 @@
     </Compile>
     <Compile Include="Fakes\ClassWithLazy.cs" />
     <Compile Include="Fakes\ClassWithParameterizedFunc.cs" />
+    <Compile Include="Fakes\CustomizableDagger.cs" />
     <Compile Include="Fakes\CustomizableSword.cs" />
     <Compile Include="Fakes\ClassWithFunc.cs" />
     <Compile Include="FactoryTests.cs" />
     <Compile Include="Fakes\Dagger.cs" />
     <Compile Include="Fakes\FuncOverloadTestFake.cs" />
+    <Compile Include="Fakes\FuncOverloadTestImplementationFake.cs" />
+    <Compile Include="Fakes\ISpecialWeaponFactory.cs" />
     <Compile Include="FuncTests.cs" />
     <Compile Include="Fakes\IWeapon.cs" />
     <Compile Include="Fakes\ICustomizableWeapon.cs" />
@@ -114,8 +117,11 @@
     <Compile Include="UnitTests\FuncConstructorArgumentTests.cs" />
     <Compile Include="UnitTests\FuncProviderTests.cs" />
     <Compile Include="UnitTests\FunctionFactoryTests.cs" />
+    <Compile Include="UnitTests\InstanceResolverTests.cs" />
     <Compile Include="UnitTests\IResolutionRootMockExtensions.cs" />
     <Compile Include="UnitTests\ProxyTargetParameterTests.cs" />
+    <Compile Include="UnitTests\StandardInstanceProviderDefaultImplementationTests.cs" />
+    <Compile Include="UnitTests\StandardInstanceProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninject.Extensions.Factory\Ninject.Extensions.Factory.csproj">
