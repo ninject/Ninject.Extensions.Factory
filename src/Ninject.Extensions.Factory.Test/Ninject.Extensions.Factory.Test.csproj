@@ -96,6 +96,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Fakes\ClassWithCollectionFunc.cs" />
     <Compile Include="Fakes\ClassWithLazy.cs" />
     <Compile Include="Fakes\ClassWithParameterizedFunc.cs" />
     <Compile Include="Fakes\CustomizableDagger.cs" />

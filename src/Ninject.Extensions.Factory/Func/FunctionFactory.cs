@@ -22,9 +22,11 @@
 namespace Ninject.Extensions.Factory
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
+    using Ninject.Parameters;
     using Ninject.Syntax;
 
     /// <summary>
@@ -56,7 +58,7 @@ namespace Ninject.Extensions.Factory
         {
             return this.methodInfos.Single(mi => mi.GetGenericArguments().Length == genericArgumentCount);
         }
-
+        
         /// <summary>
         /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root. 
         /// </summary>
@@ -65,7 +67,9 @@ namespace Ninject.Extensions.Factory
         /// <returns>The new instance of <typeparamref name="TService"/> created using the resolution root.</returns>
         public Func<TService> Create<TService>(IResolutionRoot resolutionRoot)
         {
-            return () => resolutionRoot.Get<TService>();
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
+            return () => Get(resolutionRoot, convertFunction, type);
         }
 
         /// <summary>
@@ -79,7 +83,12 @@ namespace Ninject.Extensions.Factory
         /// </returns>
         public Func<TArg1, TService> Create<TArg1, TService>(IResolutionRoot resolutionRoot)
         {
-            return arg1 => resolutionRoot.Get<TService>(
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
+            return arg1 => Get(
+                resolutionRoot,
+                convertFunction,
+                type,
                 FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1));
         }
 
@@ -95,7 +104,12 @@ namespace Ninject.Extensions.Factory
         /// </returns>
         public Func<TArg1, TArg2, TService> Create<TArg1, TArg2, TService>(IResolutionRoot resolutionRoot)
         {
-            return (arg1, arg2) => resolutionRoot.Get<TService>(
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
+            return (arg1, arg2) => Get(
+                resolutionRoot,
+                convertFunction,
+                type,
                 FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                 FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2));
         }
@@ -113,7 +127,12 @@ namespace Ninject.Extensions.Factory
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TService> Create<TArg1, TArg2, TArg3, TService>(IResolutionRoot resolutionRoot)
         {
-            return (arg1, arg2, arg3) => resolutionRoot.Get<TService>(
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
+            return (arg1, arg2, arg3) => Get(
+                resolutionRoot,
+                convertFunction,
+                type,
                 FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                 FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                 FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3));
@@ -134,8 +153,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -159,8 +183,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -185,8 +214,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -213,8 +247,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -243,8 +282,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -275,8 +319,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -309,8 +358,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -345,8 +399,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -383,8 +442,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -423,8 +487,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -465,8 +534,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -509,8 +583,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) =>
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -555,8 +634,13 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TArg16, TService> 
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TArg16, TService>(IResolutionRoot resolutionRoot)
         {
+            Type type;
+            var convertFunction = GetConvertionFunction<TService>(out type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16) => 
-                   resolutionRoot.Get<TService>(
+                   Get(
+                       resolutionRoot,
+                       convertFunction,
+                       type,
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg1), arg1),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg2), arg2),
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg3), arg3),
@@ -575,5 +659,64 @@ namespace Ninject.Extensions.Factory
                        FuncConstructorArgumentFactory.CreateFuncConstructorArgument(typeof(TArg16), arg16));
         }
 #endif
+
+        /// <summary>
+        /// Gets an instance using the specified resolution root.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="resolutionRoot">The resolution root.</param>
+        /// <param name="convertFunction">The convert function</param>
+        /// <param name="type">The type to resolve.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The newly created instance.</returns>
+        private static TService Get<TService>(
+            IResolutionRoot resolutionRoot, 
+            Func<IEnumerable<object>, TService> convertFunction,
+            Type type,
+            params IParameter[] parameters)
+        {
+            if (convertFunction != null)
+            {
+                return convertFunction(resolutionRoot.GetAll(type, parameters));
+            }
+
+            return resolutionRoot.Get<TService>(parameters);
+        }
+
+        /// <summary>
+        /// Gets the convertion function to convert IEnumerable{object} to the result type.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instanceType">Type of the instance.</param>
+        /// <returns>The convertion function.</returns>
+        private static Func<IEnumerable<object>, TService> GetConvertionFunction<TService>(out Type instanceType)
+        {
+            var type = typeof(TService);
+            if (type.IsGenericType)
+            {
+                var genericType = type.GetGenericTypeDefinition();
+                if (genericType == typeof(IEnumerable<>) ||
+                    genericType == typeof(ICollection<>) ||
+                    genericType == typeof(IList<>) ||
+                    genericType == typeof(List<>))
+                {
+                    instanceType = type.GetGenericArguments()[0];
+                    var castMethod = typeof(Enumerable).GetMethod("Cast").MakeGenericMethod(instanceType);
+                    var toListMethod = typeof(Enumerable).GetMethod("ToList").MakeGenericMethod(instanceType);
+                    return instances => (TService)toListMethod.Invoke(null, new[] { castMethod.Invoke(null, new object[] { instances }) });
+                }
+            }
+
+            if (type.IsArray)
+            {
+                instanceType = type.GetElementType();
+                var castMethod = typeof(Enumerable).GetMethod("Cast").MakeGenericMethod(instanceType);
+                var toArrayMethod = typeof(Enumerable).GetMethod("ToArray").MakeGenericMethod(instanceType);
+                return instances => (TService)toArrayMethod.Invoke(null, new[] { castMethod.Invoke(null, new object[] { instances }) });
+            }
+
+            instanceType = null;
+            return null;
+        }
     }
 }

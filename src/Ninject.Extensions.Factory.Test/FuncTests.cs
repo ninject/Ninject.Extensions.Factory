@@ -22,6 +22,7 @@
 namespace Ninject.Extensions.Factory
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using FluentAssertions;
@@ -115,6 +116,76 @@ namespace Ninject.Extensions.Factory
             weapon.Name.Should().Be(Name);
             weapon.Width.Should().Be(Width);
             weapon.Length.Should().Be(Length);
+        }
+
+        [Fact]
+        public void Eumerable()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+
+            var service = this.kernel.Get<ClassWithCollectionFunc>();
+            var weapons = service.CreateWeaponsEnumerable();
+
+            weapons.Should().HaveCount(2);
+            weapons.Any(w => w.GetType() == typeof(Sword)).Should().BeTrue();
+            weapons.Any(w => w.GetType() == typeof(Dagger)).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Collection()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+
+            var service = this.kernel.Get<ClassWithCollectionFunc>();
+            var weapons = service.CreateWeaponsCollection();
+
+            weapons.Should().HaveCount(2);
+            weapons.Any(w => w.GetType() == typeof(Sword)).Should().BeTrue();
+            weapons.Any(w => w.GetType() == typeof(Dagger)).Should().BeTrue();
+        }
+
+        [Fact]
+        public void ListInterface()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+
+            var service = this.kernel.Get<ClassWithCollectionFunc>();
+            var weapons = service.CreateWeaponsListInterface();
+
+            weapons.Should().HaveCount(2);
+            weapons.Any(w => w.GetType() == typeof(Sword)).Should().BeTrue();
+            weapons.Any(w => w.GetType() == typeof(Dagger)).Should().BeTrue();
+        }
+
+        [Fact]
+        public void List()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+
+            var service = this.kernel.Get<ClassWithCollectionFunc>();
+            var weapons = service.CreateWeaponsList();
+
+            weapons.Should().HaveCount(2);
+            weapons.Any(w => w.GetType() == typeof(Sword)).Should().BeTrue();
+            weapons.Any(w => w.GetType() == typeof(Dagger)).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Array()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeapon>().To<Dagger>();
+
+            var service = this.kernel.Get<ClassWithCollectionFunc>();
+            var weapons = service.CreateWeaponsArray();
+
+            weapons.Should().HaveCount(2);
+            weapons.Any(w => w.GetType() == typeof(Sword)).Should().BeTrue();
+            weapons.Any(w => w.GetType() == typeof(Dagger)).Should().BeTrue();
         }
 
 #if !NET_35 && !SILVERLIGHT_30 && !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
