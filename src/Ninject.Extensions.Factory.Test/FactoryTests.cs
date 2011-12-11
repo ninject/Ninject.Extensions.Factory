@@ -207,6 +207,19 @@ namespace Ninject.Extensions.Factory
             instance2.Should().BeOfType<Sword>();
         }
 
+        [Fact]
+        public void GenericFactoryMethodsAreSupported()
+        {
+            this.kernel.Bind<IMessageHandlerFactory>().ToFactory();
+            this.kernel.Bind<IMessageHandler<int>>().To<IntMessageHandler>();
+
+            var factory = this.kernel.Get<IMessageHandlerFactory>();
+            var handlers = factory.CreateMessageHandlerFor<int>();
+
+            handlers.Should().HaveCount(1);
+            handlers.Single().Should().BeOfType<IntMessageHandler>();
+        }
+        
         private class CustomInstanceProvider : StandardInstanceProvider
         {
             protected override string GetName(System.Reflection.MethodInfo methodInfo, object[] arguments)
