@@ -60,6 +60,17 @@ namespace Ninject.Extensions.Factory
         }
 
         [Fact]
+        public void SingleBindingWhenUsingNineGenericBind()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind(typeof(IWeaponFactory)).ToFactory(typeof(IWeaponFactory));
+
+            var weapon = this.kernel.Get<IWeaponFactory>().CreateWeapon();
+
+            weapon.Should().BeOfType<Sword>();
+        }
+        
+        [Fact]
         public void NamedBinding()
         {
             this.kernel.Bind<IWeapon>().To<Sword>().Named("Sword");
@@ -189,6 +200,26 @@ namespace Ninject.Extensions.Factory
             instance.Width.Should().Be(Width);
         }
 
+        [Fact]
+        public void CustomInstanceProviderWhenUsingNoneGenericBindTest()
+        {
+            const string Name = "theName";
+            const int Length = 1;
+            const int Width = 2;
+
+            this.kernel.Bind<ICustomizableWeapon>().To<CustomizableSword>().Named("sword");
+            this.kernel.Bind<ICustomizableWeapon>().To<CustomizableDagger>().Named("dagger");
+            this.kernel.Bind(typeof(ISpecialWeaponFactory)).ToFactory(() => new CustomInstanceProvider(), typeof(ISpecialWeaponFactory));
+
+            var factory = this.kernel.Get<ISpecialWeaponFactory>();
+            var instance = factory.CreateWeapon("sword", Length, Name, Width);
+
+            instance.Should().BeOfType<CustomizableSword>();
+            instance.Name.Should().Be(Name);
+            instance.Length.Should().Be(Length);
+            instance.Width.Should().Be(Width);
+        }
+        
         [Fact]
         public void DefaultAndCustomInstanceProviderCanBeMixed()
         {

@@ -23,11 +23,8 @@
 namespace Ninject.Extensions.Factory
 {
     using System;
-
     using Castle.DynamicProxy;
-
     using Ninject.Activation;
-    using Ninject.Planning.Bindings;
     using Ninject.Syntax;
 
     /// <summary>
@@ -44,7 +41,20 @@ namespace Ninject.Extensions.Factory
         public static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(this IBindingToSyntax<TInterface> syntax)
             where TInterface : class
         {
-            return ToFactory(syntax, ctx => ctx.Kernel.Get<IInstanceProvider>());
+            return ToFactory(syntax, ctx => ctx.Kernel.Get<IInstanceProvider>(), typeof(TInterface));
+        }
+
+        /// <summary>
+        /// Defines that the interface shall be bound to an automatically created factory proxy.
+        /// </summary>
+        /// <param name="syntax">The syntax.</param>
+        /// <param name="factoryType">The type of the factory.</param>
+        /// <returns>
+        /// The <see cref="IBindingWhenInNamedWithOrOnSyntax{TInterface}"/> to configure more things for the binding.
+        /// </returns>
+        public static IBindingWhenInNamedWithOrOnSyntax<object> ToFactory(this IBindingToSyntax<object> syntax, Type factoryType)
+        {
+            return ToFactory(syntax, ctx => ctx.Kernel.Get<IInstanceProvider>(), factoryType);
         }
 
         /// <summary>
@@ -59,7 +69,21 @@ namespace Ninject.Extensions.Factory
         public static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(this IBindingToSyntax<TInterface> syntax, Func<IInstanceProvider> instanceProvider)
             where TInterface : class
         {
-            return ToFactory(syntax, ctx => instanceProvider());
+            return ToFactory(syntax, ctx => instanceProvider(), typeof(TInterface));
+        }
+
+        /// <summary>
+        /// Defines that the interface shall be bound to an automatically created factory proxy.
+        /// </summary>
+        /// <param name="syntax">The syntax.</param>
+        /// <param name="instanceProvider">The instance provider.</param>
+        /// <param name="factoryType">Type of the factory.</param>
+        /// <returns>
+        /// The <see cref="IBindingWhenInNamedWithOrOnSyntax{TInterface}"/> to configure more things for the binding.
+        /// </returns>
+        public static IBindingWhenInNamedWithOrOnSyntax<object> ToFactory(this IBindingToSyntax<object> syntax, Func<IInstanceProvider> instanceProvider, Type factoryType)
+        {
+            return ToFactory(syntax, ctx => instanceProvider(), factoryType);
         }
 
         /// <summary>
@@ -68,14 +92,15 @@ namespace Ninject.Extensions.Factory
         /// <typeparam name="TInterface">The type of the interface.</typeparam>
         /// <param name="syntax">The syntax.</param>
         /// <param name="instanceProvider">The instance provider.</param>
+        /// <param name="factoryType">Type of the factory.</param>
         /// <returns>
         /// The <see cref="IBindingWhenInNamedWithOrOnSyntax{TInterface}"/> to configure more things for the binding.
         /// </returns>
-        private static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(IBindingToSyntax<TInterface> syntax, Func<IContext, IInstanceProvider> instanceProvider) 
+        private static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(IBindingToSyntax<TInterface> syntax, Func<IContext, IInstanceProvider> instanceProvider, Type factoryType) 
             where TInterface : class
         {
             var proxy = new ProxyGenerator().ProxyBuilder.CreateInterfaceProxyTypeWithoutTarget(
-                typeof(TInterface), new[] { typeof(IFactoryProxy) }, ProxyGenerationOptions.Default);
+                factoryType, new[] { typeof(IFactoryProxy) }, ProxyGenerationOptions.Default);
             var result = syntax.To(proxy);
             result.WithParameter(new ProxyTargetParameter());
 
