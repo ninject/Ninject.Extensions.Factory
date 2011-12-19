@@ -79,10 +79,10 @@ namespace Ninject.Extensions.Factory
             var result = syntax.To(proxy);
             result.WithParameter(new ProxyTargetParameter());
 
-            var binding = syntax.Binding; // Do not pass syntax to the lambda!!! We do not want the lambda referencing the syntax!!!
+            var bindingConfiguration = syntax.BindingConfiguration; // Do not pass syntax to the lambda!!! We do not want the lambda referencing the syntax!!!
             syntax.Kernel.Bind<IInstanceProvider>().ToMethod(instanceProvider)
-                .When(r => r.ParentRequest != null && r.ParentRequest.ParentContext.Binding == binding)
-                .InScope(ctx => binding);
+                .When(r => r.ParentRequest != null && r.ParentRequest.ParentContext.Binding.BindingConfiguration == bindingConfiguration)
+                .InScope(ctx => bindingConfiguration);
 
             return result;
         }
