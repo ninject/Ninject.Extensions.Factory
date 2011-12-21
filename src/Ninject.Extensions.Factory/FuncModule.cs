@@ -44,7 +44,7 @@ namespace Ninject.Extensions.Factory
         {
             if (!this.Kernel.GetBindings(typeof(Func<IContext, IResolutionRoot>)).Any())
             {
-                this.Bind<Func<IContext, IResolutionRoot>>().ToMethod<Func<IContext, IResolutionRoot>>(ctx => context => context.Kernel);
+                this.Bind<Func<IContext, IResolutionRoot>>().ToMethod(ctx => context => context.Kernel);
             }
 
             this.Bind<FuncProvider>().ToSelf().InSingletonScope();
