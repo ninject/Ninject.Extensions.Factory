@@ -88,7 +88,9 @@ namespace Ninject.Extensions.Factory
             const int Width = 34;
             const int Length = 123;
 
-            this.kernel.Bind<ICustomizableWeapon>().ToConstructor(x => new CustomizableSword(x.Inject<string>(), Width, x.Inject<int>()));
+            this.kernel.Bind<ICustomizableWeapon>()
+                .To<CustomizableSword>()
+                .WithConstructorArgument("width", Width);
 
             var service = this.kernel.Get<ClassWithParameterizedFunc>();
             var weapon = service.CreateWeapon(Name, Length);

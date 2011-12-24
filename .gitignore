@@ -1,8 +1,10 @@
 /build/*
 /dist/*
+obj
 /src/Ninject.Extensions.Factory.5.0.ReSharper.user
 /src/Ninject.Extensions.Factory.5.1.TeamCity.user
-/src/Ninject.Extensions.Factory/_ReSharper.Ninject.Extensions.Factory/*
+_ReSharper.Ninject.Extensions.Factory
+_ReSharper.Ninject.Extensions.Factory with Silverlight and WP7 Unittesting
 /src/Ninject.Extensions.Factory/obj/*
 /src/Ninject.Extensions.Factory.Test/obj/*
 /src/_ReSharper.Ninject.Extensions.Factory/*
