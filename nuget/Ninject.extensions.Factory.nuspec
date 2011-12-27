@@ -7,7 +7,6 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>https://github.com/ninject/ninject.extensions.factory/raw/master/LICENSE.txt</licenseUrl>
     <description>Ninject extension that allows to automatically create factories.</description>
-    <summary></summary>
     <language>en-US</language>
 	<tags>Ninject ioc di</tags>
 	<iconUrl>https://github.com/ninject/ninject/raw/master/logos/Ninject-Logo32.png</iconUrl>
