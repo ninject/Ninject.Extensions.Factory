@@ -46,8 +46,8 @@ namespace Ninject.Extensions.Factory
         /// Gets an instance for the specified method and arguments.
         /// </summary>
         /// <param name="instanceResolver">The instance resolver.</param>
-        /// <param name="methodInfo">The method info.</param>
-        /// <param name="arguments">The arguments.</param>
+        /// <param name="methodInfo">The method info of the method that was called on the factory.</param>
+        /// <param name="arguments">The arguments that were passed to the factory.</param>
         /// <returns>The newly created instance.</returns>
         public virtual object GetInstance(IInstanceResolver instanceResolver, MethodInfo methodInfo, object[] arguments)
         {
@@ -81,8 +81,8 @@ namespace Ninject.Extensions.Factory
         /// <summary>
         /// Gets the constraint for the specified method and arguments.
         /// </summary>
-        /// <param name="methodInfo">The method info.</param>
-        /// <param name="arguments">The arguments.</param>
+        /// <param name="methodInfo">The method info of the method that was called on the factory.</param>
+        /// <param name="arguments">The arguments passed to the factory.</param>
         /// <returns>The constraint that shall be used to receive an instance. Null if no constraint shall be used.</returns>
         protected virtual Func<IBindingMetadata, bool> GetConstraint(MethodInfo methodInfo, object[] arguments)
         {
@@ -92,8 +92,8 @@ namespace Ninject.Extensions.Factory
         /// <summary>
         /// Gets the type that shall be created for the specified method and arguments.
         /// </summary>
-        /// <param name="methodInfo">The method info.</param>
-        /// <param name="arguments">The arguments.</param>
+        /// <param name="methodInfo">The method info of the method that was called on the factory.</param>
+        /// <param name="arguments">The arguments that were passed to the factory.</param>
         /// <returns>The type that shall be created for the specified method and arguments.</returns>
         protected virtual Type GetType(MethodInfo methodInfo, object[] arguments)
         {
@@ -104,8 +104,8 @@ namespace Ninject.Extensions.Factory
         /// Gets the name that shall be used to request an instance for the specified method and arguments. 
         /// Null if unnamed instances shall be requested.
         /// </summary>
-        /// <param name="methodInfo">The method info.</param>
-        /// <param name="arguments">The arguments.</param>
+        /// <param name="methodInfo">The method info of the method that was called on the factory.</param>
+        /// <param name="arguments">The arguments that were passed to the factory.</param>
         /// <returns>The name that shall be used to request an instance for the specified method and arguments. 
         /// Null if unnamed instances shall be requested.</returns>
         protected virtual string GetName(MethodInfo methodInfo, object[] arguments)
@@ -116,8 +116,8 @@ namespace Ninject.Extensions.Factory
         /// <summary>
         /// Gets the constructor arguments that shall be passed with the instance request.
         /// </summary>
-        /// <param name="methodInfo">The method info.</param>
-        /// <param name="arguments">The arguments.</param>
+        /// <param name="methodInfo">The method info of the method that was called on the factory.</param>
+        /// <param name="arguments">The arguments that were passed to the factory.</param>
         /// <returns>The constructor arguments that shall be passed with the instance request.</returns>
         protected virtual ConstructorArgument[] GetConstructorArguments(MethodInfo methodInfo, object[] arguments)
         {
