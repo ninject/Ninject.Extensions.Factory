@@ -102,6 +102,14 @@ namespace Ninject.Extensions.Factory
         }
 
         [Fact]
+        public void NamedLikeFactoryMethodThrowsExceptionWhenActionIsNull()
+        {
+            Action action = () => this.kernel.Bind<IWeapon>().To<Sword>().NamedLikeFactoryMethod<Sword, ICustomizableWeapon>(null);
+            
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Fact]
         public void GetFallback()
         {
             this.kernel.Bind<IWeapon>().To<Dagger>();

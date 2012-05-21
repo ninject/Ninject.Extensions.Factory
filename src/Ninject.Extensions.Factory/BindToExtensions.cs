@@ -100,6 +100,11 @@ namespace Ninject.Extensions.Factory
         /// </returns>
         public static IBindingWithOrOnSyntax<TInterface> NamedLikeFactoryMethod<TInterface, TFactory>(this IBindingNamedSyntax<TInterface> syntax, Expression<Action<TFactory>> action)
         {
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
             var methodCallExpression = action.Body as MethodCallExpression;
 
             if (methodCallExpression == null)
