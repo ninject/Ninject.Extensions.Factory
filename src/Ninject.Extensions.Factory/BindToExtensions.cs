@@ -23,6 +23,8 @@
 namespace Ninject.Extensions.Factory
 {
     using System;
+    using System.Linq.Expressions;
+
     using Castle.DynamicProxy;
     using Ninject.Activation;
     using Ninject.Syntax;
@@ -84,6 +86,37 @@ namespace Ninject.Extensions.Factory
         public static IBindingWhenInNamedWithOrOnSyntax<object> ToFactory(this IBindingToSyntax<object> syntax, Func<IInstanceProvider> instanceProvider, Type factoryType)
         {
             return ToFactory(syntax, ctx => instanceProvider(), factoryType);
+        }
+
+        /// <summary>
+        /// Defines a named binding with the name taken from the factory method used to create instances.
+        /// </summary>
+        /// <typeparam name="TInterface">The type of the interface.</typeparam>
+        /// <typeparam name="TFactory">¨The type of the factory.</typeparam>
+        /// <param name="syntax">The syntax.</param>
+        /// <param name="action">Expression defining the factory method used to get the binding name from.</param>
+        /// <returns>
+        /// The <see cref="IBindingWithOrOnSyntax{TInterface}"/> to configure more things for the binding.
+        /// </returns>
+        public static IBindingWithOrOnSyntax<TInterface> NamedLikeFactoryMethod<TInterface, TFactory>(this IBindingNamedSyntax<TInterface> syntax, Expression<Action<TFactory>> action)
+        {
+            var methodCallExpression = action.Body as MethodCallExpression;
+
+            if (methodCallExpression == null)
+            {
+                throw new ArgumentException("expected factory method instead of " + action, "action");
+            }
+
+            var methodName = methodCallExpression.Method.Name;
+
+            if (!methodName.StartsWith("Get"))
+            {
+                throw new ArgumentException("expected factory 'Get' method instead of " + action, "action");
+            }
+
+            var bindingName = methodName.Substring(3);
+
+            return syntax.Named(bindingName);
         }
 
         /// <summary>

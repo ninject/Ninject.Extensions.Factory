@@ -83,6 +83,25 @@ namespace Ninject.Extensions.Factory
         }
 
         [Fact]
+        public void NamedLikeFactoryMethod()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>().NamedLikeFactoryMethod((IWeaponFactory f) => f.GetSword());
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+
+            var weapon = this.kernel.Get<IWeaponFactory>().GetSword();
+
+            weapon.Should().BeOfType<Sword>();
+        }
+
+        [Fact]
+        public void NamedLikeFactoryMethodThrowsExceptionWhenNotAGetFactoryMethod()
+        {
+            Action action = () => this.kernel.Bind<IWeapon>().To<Sword>().NamedLikeFactoryMethod((IWeaponFactory f) => f.CreateWeapon());
+
+            action.ShouldThrow<ArgumentException>();
+        }
+
+        [Fact]
         public void GetFallback()
         {
             this.kernel.Bind<IWeapon>().To<Dagger>();
@@ -250,7 +269,7 @@ namespace Ninject.Extensions.Factory
             handlers.Should().HaveCount(1);
             handlers.Single().Should().BeOfType<IntMessageHandler>();
         }
-        
+
         private class CustomInstanceProvider : StandardInstanceProvider
         {
             protected override string GetName(System.Reflection.MethodInfo methodInfo, object[] arguments)
