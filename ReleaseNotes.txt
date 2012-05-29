@@ -1,3 +1,8 @@
+Version 3.0.1
+---------------
+Added: Binding syntax extension method (NamedLikeFactoryMethod) for defining a named binding corresponding with a GetXYZ factory method
+
+
 Version 3.0.0.0
 ---------------
 Initial version
