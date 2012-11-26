@@ -20,7 +20,7 @@
 //-------------------------------------------------------------------------------
 
 #if !NO_MOQ
-#if !SILVERLIGHT && !WINDOWS_PHONE && !NETCF_35 && !MONO
+#if !SILVERLIGHT && !WINDOWS_PHONE && !NETCF_35
 namespace Ninject.Extensions.Factory.UnitTests
 {
     using Castle.DynamicProxy;

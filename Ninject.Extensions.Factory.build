@@ -44,6 +44,9 @@
 				<include name="${path.lib}/Ninject/${build.platform}/Ninject.dll"/>
 				<include name="${current.path.lib.DynamicProxy}/Castle.Core.dll" unless="${NoDynamicProxy}"/>
 			</references>
+			<nowarn>
+				<warning number="1584"/>
+			</nowarn>		
 		</csc>
 	</target>
 

@@ -20,7 +20,7 @@
 //-------------------------------------------------------------------------------
 
 #if !NO_MOQ
-#if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35 && !MONO
+#if !SILVERLIGHT_20 && !WINDOWS_PHONE && !NETCF_35
 namespace Ninject.Extensions.Factory.UnitTests
 {
     using FluentAssertions;
