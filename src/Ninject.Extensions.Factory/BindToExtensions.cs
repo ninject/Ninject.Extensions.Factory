@@ -34,6 +34,8 @@ namespace Ninject.Extensions.Factory
     /// </summary>
     public static class BindToExtensions
     {
+        private static readonly ProxyGenerator Generator = new ProxyGenerator();
+
         /// <summary>
         /// Defines that the interface shall be bound to an automatically created factory proxy.
         /// </summary>
@@ -137,7 +139,7 @@ namespace Ninject.Extensions.Factory
         private static IBindingWhenInNamedWithOrOnSyntax<TInterface> ToFactory<TInterface>(IBindingToSyntax<TInterface> syntax, Func<IContext, IInstanceProvider> instanceProvider, Type factoryType) 
             where TInterface : class
         {
-            var proxy = new ProxyGenerator().ProxyBuilder.CreateInterfaceProxyTypeWithoutTarget(
+            var proxy = Generator.ProxyBuilder.CreateInterfaceProxyTypeWithoutTarget(
                 factoryType, new[] { typeof(IFactoryProxy) }, ProxyGenerationOptions.Default);
             var result = syntax.To(proxy);
             result.WithParameter(new ProxyTargetParameter());
