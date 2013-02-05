@@ -1,3 +1,7 @@
+Version 3.0.2
+-------------
+Bugfix: Fixed internal Memory leak
+
 Version 3.0.1
 ---------------
 Added: Binding syntax extension method (NamedLikeFactoryMethod) for defining a named binding corresponding with a GetXYZ factory method
