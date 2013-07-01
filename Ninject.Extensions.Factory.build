@@ -16,20 +16,23 @@
 	<target name="core" depends="init">
 		<property name="NoDynamicProxy" value = "false"/>
 		<property name="NoDynamicProxy" value = "true" if="${string::contains(build.platform, 'silverlight-2.0') or string::contains(build.platform, 'netcf-3.5') or string::contains(build.platform, 'wp7')}"/>
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-3.5" if="${string::contains(build.platform, 'net-3.5')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-4.0" if="${string::contains(build.platform, 'net-4.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-3.0" if="${string::contains(build.platform, 'silverlight-3.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-4.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-5.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-3.5" if="${string::contains(build.platform, 'mono')}" />
+		
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/net35" if="${string::contains(build.platform, 'net-3.5')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/net40-client" if="${string::contains(build.platform, 'net-4.0')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/net45" if="${string::contains(build.platform, 'net-4.5')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/sl4" if="${string::contains(build.platform, 'silverlight-4.0')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/sl5" if="${string::contains(build.platform, 'silverlight-5.0')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/net35" if="${string::contains(build.platform, 'mono')}" />
+		
+		<property name="current.path.lib.DynamicProxy" value="${path.packages}/${packagepath.DynamicProxy}" unless="${NoDynamicProxy}"/>
 		<property name="current.path.lib.DynamicProxy" value="${path.lib}" if="${NoDynamicProxy}" />
 		
 		<copy todir="${current.path.build}/DynamicProxy/lib" unless="${NoDynamicProxy}">
-			<fileset basedir="${current.path.lib.DynamicProxy}">
-				<include name="**/*.dll"/>
-				<include name="**/*.xml"/>
+			<fileset basedir="${path.packages}">
+				<include name="${packagepath.DynamicProxy}/*.dll"/>
+				<include name="${packagepath.DynamicProxy}/*.xml"/>
 			</fileset>
-		</copy>		
+		</copy>	
 
 		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" output="${current.path.build}/${product.assembly}" doc="${current.path.build}/${product.docfile}" keyfile="${path.src}/${product.keyfile}">
 			<arg line="/filealign:512" unless="${nant.settings.currentframework == 'mono-2.0'}"/>

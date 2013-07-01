@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Factory", "Ninject.Extensions.Factory\Ninject.Extensions.Factory.csproj", "{9831975F-FA35-4B8B-A545-1A06852625BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Factory", "src\Ninject.Extensions.Factory\Ninject.Extensions.Factory.csproj", "{9831975F-FA35-4B8B-A545-1A06852625BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Factory.Test", "Ninject.Extensions.Factory.Test\Ninject.Extensions.Factory.Test.csproj", "{EB0A05EF-2630-4F8B-92D8-6763509C0D80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Factory.Test", "src\Ninject.Extensions.Factory.Test\Ninject.Extensions.Factory.Test.csproj", "{EB0A05EF-2630-4F8B-92D8-6763509C0D80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
