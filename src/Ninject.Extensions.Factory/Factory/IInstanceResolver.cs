@@ -45,7 +45,7 @@ namespace Ninject.Extensions.Factory.Factory
             Type type,
             string name,
             Func<IBindingMetadata, bool> constraint,
-            ConstructorArgument[] constructorArguments, 
+            IConstructorArgument[] constructorArguments, 
             bool fallback);
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Ninject.Extensions.Factory.Factory
             Type type,
             string name,
             Func<IBindingMetadata, bool> constraint,
-            ConstructorArgument[] constructorArguments,
+            IConstructorArgument[] constructorArguments,
             bool fallback);
     
         /// <summary>
@@ -79,7 +79,7 @@ namespace Ninject.Extensions.Factory.Factory
             Type type,
             string name,
             Func<IBindingMetadata, bool> constraint,
-            ConstructorArgument[] constructorArguments,
+            IConstructorArgument[] constructorArguments,
             bool fallback);
     }
 }

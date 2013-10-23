@@ -90,7 +90,7 @@ namespace Ninject.Extensions.Factory.UnitTests
             resolutionRootMock.Setup(resolutionRoot => resolutionRoot.Resolve(request)).Returns(result.Cast<object>());
         }
 
-        public static void VerifyParameters(this Mock<IResolutionRoot> resolutionRootMock, params ConstructorArgument[] arguments)
+        public static void VerifyParameters(this Mock<IResolutionRoot> resolutionRootMock, params IConstructorArgument[] arguments)
         {
             resolutionRootMock.Verify(
                 resolutionRoot => resolutionRoot.CreateRequest(It.IsAny<Type>(), null, arguments, false, true));

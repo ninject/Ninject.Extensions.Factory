@@ -47,7 +47,7 @@ namespace Ninject.Extensions.Factory.UnitTests
 
         private readonly Func<IBindingMetadata, bool> constraint;
 
-        private readonly ConstructorArgument[] constructorArguments;
+        private readonly IConstructorArgument[] constructorArguments;
 
         public InstanceResolverTests()
         {

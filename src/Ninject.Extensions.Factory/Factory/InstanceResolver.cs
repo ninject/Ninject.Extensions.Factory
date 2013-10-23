@@ -58,7 +58,7 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>An instance of the specified type.</returns>
-        public object Get(Type type, string name, Func<IBindingMetadata, bool> constraint, ConstructorArgument[] constructorArguments, bool fallback)
+        public object Get(Type type, string name, Func<IBindingMetadata, bool> constraint, IConstructorArgument[] constructorArguments, bool fallback)
         {
             if (fallback && constraint != null)
             {
@@ -89,7 +89,7 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>An instance of the specified type.</returns>
-        public object GetAllAsList(Type type, string name, Func<IBindingMetadata, bool> constraint, ConstructorArgument[] constructorArguments, bool fallback)
+        public object GetAllAsList(Type type, string name, Func<IBindingMetadata, bool> constraint, IConstructorArgument[] constructorArguments, bool fallback)
         {
             var listType = typeof(List<>).MakeGenericType(type);
             var list = listType.GetConstructor(new Type[0]).Invoke(new object[0]);
@@ -115,7 +115,7 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>An instance of the specified type.</returns>
-        public object GetAllAsArray(Type type, string name, Func<IBindingMetadata, bool> constraint, ConstructorArgument[] constructorArguments, bool fallback)
+        public object GetAllAsArray(Type type, string name, Func<IBindingMetadata, bool> constraint, IConstructorArgument[] constructorArguments, bool fallback)
         {
             var list = this.GetAllAsList(type, name, constraint, constructorArguments, fallback);
             return typeof(Enumerable)
@@ -134,7 +134,7 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>All instances of the specified type.</returns>
-        private IEnumerable<object> GetAll(Type type, string name, Func<IBindingMetadata, bool> constraint, ConstructorArgument[] constructorArguments, bool fallback)
+        private IEnumerable<object> GetAll(Type type, string name, Func<IBindingMetadata, bool> constraint, IConstructorArgument[] constructorArguments, bool fallback)
         {
             if (fallback && constraint != null)
             {
