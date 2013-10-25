@@ -119,7 +119,7 @@ namespace Ninject.Extensions.Factory
         /// <param name="methodInfo">The method info of the method that was called on the factory.</param>
         /// <param name="arguments">The arguments that were passed to the factory.</param>
         /// <returns>The constructor arguments that shall be passed with the instance request.</returns>
-        protected virtual ConstructorArgument[] GetConstructorArguments(MethodInfo methodInfo, object[] arguments)
+        protected virtual IConstructorArgument[] GetConstructorArguments(MethodInfo methodInfo, object[] arguments)
         {
             var parameters = methodInfo.GetParameters();
             var constructorArguments = new ConstructorArgument[parameters.Length];

@@ -128,7 +128,7 @@ namespace Ninject.Extensions.Factory.UnitTests
                 return this.GetType(methodInfo, arguments);
             }
 
-            public ConstructorArgument[] CallGetConstructorArguments(MethodInfo methodInfo, object[] arguments)
+            public IConstructorArgument[] CallGetConstructorArguments(MethodInfo methodInfo, object[] arguments)
             {
                 return this.GetConstructorArguments(methodInfo, arguments);
             }

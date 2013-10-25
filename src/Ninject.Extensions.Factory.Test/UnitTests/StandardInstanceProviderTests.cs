@@ -41,7 +41,7 @@ namespace Ninject.Extensions.Factory.UnitTests
     {
         private readonly Func<Planning.Bindings.IBindingMetadata, bool> constraint;
         private readonly string name;
-        private readonly ConstructorArgument[] constructorArguments;
+        private readonly IConstructorArgument[] constructorArguments;
         private readonly object[] arguments;
 
         private readonly TestableStandardInstanceProvider testee;
@@ -118,13 +118,13 @@ namespace Ninject.Extensions.Factory.UnitTests
         {
             private readonly Func<Planning.Bindings.IBindingMetadata, bool> constraint;
             private readonly string name;
-            private readonly ConstructorArgument[] constructorArguments;
+            private readonly IConstructorArgument[] constructorArguments;
             private readonly object[] expectedArguments;
 
             public TestableStandardInstanceProvider(
                 Func<Planning.Bindings.IBindingMetadata, bool> constraint,
                 string name,
-                ConstructorArgument[] constructorArguments,
+                IConstructorArgument[] constructorArguments,
                 object[] expectedArguments)
             {
                 this.constraint = constraint;
@@ -160,7 +160,7 @@ namespace Ninject.Extensions.Factory.UnitTests
                 return this.ReturnedType;
             }
 
-            protected override ConstructorArgument[] GetConstructorArguments(MethodInfo methodInfo, object[] arguments)
+            protected override IConstructorArgument[] GetConstructorArguments(MethodInfo methodInfo, object[] arguments)
             {
                 methodInfo.Should().Be(this.ExpectedMethodInfo);
                 ((object)arguments).Should().BeSameAs(this.expectedArguments);
