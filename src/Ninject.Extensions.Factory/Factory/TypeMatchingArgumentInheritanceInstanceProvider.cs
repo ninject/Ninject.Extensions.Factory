@@ -25,6 +25,14 @@ namespace Ninject.Extensions.Factory
 
     public class TypeMatchingArgumentInheritanceInstanceProvider : StandardInstanceProvider
     {
+
+        /// <summary>
+        /// Gets the constructor arguments that shall be passed with the instance request. Created constructor arguments are flagged as inherited 
+        /// and are of type TypeMatchingConstructorArgument
+        /// </summary>
+        /// <param name="methodInfo">The method info of the method that was called on the factory.</param>
+        /// <param name="arguments">The arguments that were passed to the factory.</param>
+        /// <returns>The constructor arguments that shall be passed with the instance request.</returns>
         protected override IConstructorArgument[] GetConstructorArguments(MethodInfo methodInfo, object[] arguments)
         {
             ParameterInfo[] parameters = methodInfo.GetParameters();
