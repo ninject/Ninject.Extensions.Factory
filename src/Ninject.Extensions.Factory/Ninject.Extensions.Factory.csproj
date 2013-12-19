@@ -87,6 +87,7 @@
     <Compile Include="Factory\IInstanceProvider.cs" />
     <Compile Include="Factory\InstanceResolver.cs" />
     <Compile Include="Factory\StandardInstanceProvider.cs" />
+    <Compile Include="Factory\TypeMatchingArgumentInheritanceInstanceProvider.cs" />
     <Compile Include="Func\ArgumentPositionCalculator.cs" />
     <Compile Include="BindToExtensions.cs" />
     <Compile Include="Func\ConstructorInfoExtensions.cs" />

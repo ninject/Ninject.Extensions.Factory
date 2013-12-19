@@ -26,9 +26,7 @@ namespace Ninject.Extensions.Factory
     using System.Linq;
 
     using FluentAssertions;
-
     using Ninject.Extensions.Factory.Fakes;
-
     using Xunit;
 
     public class FactoryTests : IDisposable
@@ -205,6 +203,22 @@ namespace Ninject.Extensions.Factory
             weapon.Name.Should().Be(Name);
             weapon.Length.Should().Be(Length);
             weapon.Width.Should().Be(Width);
+        }
+
+        [Fact]
+        public void TypeMatchingArgumentInheritanceInstanceProviderTest()
+        {
+            var typeMatchingInheritedConstructorArgument = new Sword();
+
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWarrior>().To<Ninja>();
+            this.kernel.Bind<IBarrack>().To<Barrack>();
+            this.kernel.Bind<IBarrackFactory>().ToFactory(() => new TypeMatchingArgumentInheritanceInstanceProvider());
+            var factory = this.kernel.Get<IBarrackFactory>();
+
+            IBarrack barrack = factory.Create(typeMatchingInheritedConstructorArgument);
+
+            barrack.Warrior.Weapon.Should().Be(typeMatchingInheritedConstructorArgument);
         }
 
         [Fact]

@@ -94,6 +94,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Fakes\Barrack.cs" />
+    <Compile Include="Fakes\IBarrackFactory.cs" />
     <Compile Include="Fakes\ClassWithCollectionFunc.cs" />
     <Compile Include="Fakes\ClassWithLazy.cs" />
     <Compile Include="Fakes\ClassWithParameterizedFunc.cs" />
@@ -104,7 +106,11 @@
     <Compile Include="Fakes\Dagger.cs" />
     <Compile Include="Fakes\FuncOverloadTestFake.cs" />
     <Compile Include="Fakes\FuncOverloadTestImplementationFake.cs" />
+    <Compile Include="Fakes\IBarrack.cs" />
     <Compile Include="Fakes\ISpecialWeaponFactory.cs" />
+    <Compile Include="Fakes\IWarrior.cs" />
+    <Compile Include="Fakes\IWarriorFactory.cs" />
+    <Compile Include="Fakes\Ninja.cs" />
     <Compile Include="FuncTests.cs" />
     <Compile Include="Fakes\IWeapon.cs" />
     <Compile Include="Fakes\ICustomizableWeapon.cs" />
