@@ -1,5 +1,6 @@
 Version 3.0.2
 -------------
+Added: Implementation (TypeMatchingArgumentInheritanceInstanceProvider) of IInstanceProvider creating inherited constructor arguments matching by type
 Bugfix: Fixed internal Memory leak
 
 Version 3.0.1
