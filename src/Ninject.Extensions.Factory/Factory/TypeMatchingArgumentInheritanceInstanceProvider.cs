@@ -22,10 +22,12 @@ namespace Ninject.Extensions.Factory
 {
     using System.Reflection;
     using Ninject.Parameters;
-
+    
+    /// <summary>
+    /// The type matching implementation of the instance provider using constructor argument inheritance.
+    /// </summary>
     public class TypeMatchingArgumentInheritanceInstanceProvider : StandardInstanceProvider
     {
-
         /// <summary>
         /// Gets the constructor arguments that shall be passed with the instance request. Created constructor arguments are flagged as inherited 
         /// and are of type TypeMatchingConstructorArgument
