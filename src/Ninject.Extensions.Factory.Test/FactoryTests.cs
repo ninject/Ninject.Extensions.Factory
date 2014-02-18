@@ -117,6 +117,19 @@ namespace Ninject.Extensions.Factory
 
             weapon.Should().BeOfType<Dagger>();
         }
+
+        [Fact]
+        public void GetFallbackWithMultipleBindings()
+        {
+            this.kernel.Bind<IWeapon>().To<Dagger>().Named("Dagger");
+            this.kernel.Bind<IWeapon>().To<Dagger>().Named("Dagger2");
+            this.kernel.Bind<IWeapon>().To<Sword>();
+            this.kernel.Bind<IWeaponFactory>().ToFactory(() => new CustomInstanceProvider { Fallback = true });
+
+            var weapon = this.kernel.Get<IWeaponFactory>().GetWeapon("Sword");
+
+            weapon.Should().BeOfType<Sword>();
+        }
         
         [Fact]
         public void GetEnumerable()

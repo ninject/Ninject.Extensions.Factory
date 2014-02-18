@@ -33,6 +33,8 @@ namespace Ninject.Extensions.Factory.Fakes
 
         IWeapon GetSword();
 
+        IWeapon GetWeapon(string type); 
+        
         IEnumerable<IWeapon> CreateAllWeaponsEnumerable();
 
         ICollection<IWeapon> CreateAllWeaponsCollection();
