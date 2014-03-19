@@ -63,7 +63,7 @@ namespace Ninject.Extensions.Factory.Factory
             if (fallback && constraint != null)
             {
                 return this.resolutionRoot.TryGet(type, constraint, constructorArguments) ??
-                       this.Get(type, name, null, constructorArguments, true);
+                       this.Get(type, name, null, constructorArguments, name != null);
             }
 
             if (fallback && name != null)

@@ -76,15 +76,27 @@ namespace Ninject.Extensions.Factory.UnitTests
             var expectedInstance = new object();
             this.resolutionRootMock.SetupGet(this.constraint, expectedInstance);
 
-            var instance = this.testee.Get(this.type, null, this.constraint, this.constructorArguments, false);
+            var instance = this.testee.Get(this.type, "someNameThatIsIgnored", this.constraint, this.constructorArguments, false);
 
             instance.Should().BeSameAs(expectedInstance);
         }
-    
+
         [Fact]
-        public void GetWithConstraintWhenFallbackIsTrueThenFallsBackToUnconstraintForNull()
+        public void GetWithConstraint_WhenFallbackIsTrue()
         {
             var expectedInstance = new object();
+            this.resolutionRootMock.SetupTryGet(this.constraint, expectedInstance);
+
+            var instance = this.testee.Get(this.type, "someNameThatIsIgnored", this.constraint, this.constructorArguments, true);
+
+            instance.Should().BeSameAs(expectedInstance);
+        }
+        
+        [Fact]
+        public void GetWithConstraint_WhenFallbackIsTrueAndNoInstanceReturned_ThenFallsBackToUnconstraint()
+        {
+            var expectedInstance = new object();
+            
             this.resolutionRootMock.SetupTryGet(this.constraint, (object)null);
             this.resolutionRootMock.SetupGet(expectedInstance);
 
@@ -94,7 +106,61 @@ namespace Ninject.Extensions.Factory.UnitTests
         }
 
         [Fact]
-        public void GetWithConstraintWhenFallbackIsFalseThenExceptionIsThrown()
+        public void GetWithConstraintAndName_WhenFallbackIsTrueAndConstraintGetReturnsNoInstance_ThenFallsBackToNamed()
+        {
+            const string name = "SomeName";
+            var expectedInstance = new object();
+
+            this.resolutionRootMock.SetupTryGet(this.constraint, (object)null);
+            this.resolutionRootMock.SetupTryGet(name, expectedInstance);
+
+            var instance = this.testee.Get(this.type, name, this.constraint, this.constructorArguments, true);
+
+            instance.Should().BeSameAs(expectedInstance);
+        }
+
+        [Fact]
+        public void GetWithName()
+        {
+            const string name = "SomeName";
+            var expectedInstance = new object();
+
+            this.resolutionRootMock.SetupGet(name, expectedInstance);
+
+            var instance = this.testee.Get(this.type, name, null, this.constructorArguments, false);
+
+            instance.Should().BeSameAs(expectedInstance);
+        }
+
+        [Fact]
+        public void GetWithName_WhenFallbackIsTrue()
+        {
+            const string name = "SomeName";
+            var expectedInstance = new object();
+
+            this.resolutionRootMock.SetupTryGet(name, expectedInstance);
+
+            var instance = this.testee.Get(this.type, name, null, this.constructorArguments, true);
+
+            instance.Should().BeSameAs(expectedInstance);
+        }
+
+        [Fact]
+        public void GetWithName_WhenFallbackIsTrueAndNoInstanceIsReturned_ThenFallbackToRequestBindingWithNoName()
+        {
+            const string name = "SomeName";
+            var expectedInstance = new object();
+
+            this.resolutionRootMock.SetupTryGet(name, (object)null);
+            this.resolutionRootMock.SetupGet((string)null, expectedInstance);
+
+            var instance = this.testee.Get(this.type, name, null, this.constructorArguments, true);
+
+            instance.Should().BeSameAs(expectedInstance);
+        }
+        
+        [Fact]
+        public void GetWithConstraint_WhenFallbackIsFalse_ThenExceptionIsThrown()
         {
             this.resolutionRootMock.SetupGetThrowing<object>(this.constraint);
 
