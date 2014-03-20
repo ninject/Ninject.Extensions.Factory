@@ -125,6 +125,42 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
+        /// Defines a conditional binding that is used when any ancestor was created over the specified GetXYZ factory method.
+        /// <seealso cref="NamedLikeFactoryMethod"/>
+        /// </summary>
+        /// <typeparam name="TInterface">The type of the interface.</typeparam>
+        /// <typeparam name="TFactory">The type of the factory.</typeparam>
+        /// <param name="syntax">The syntax.</param>
+        /// <param name="action">Expression defining the factory method used to get the binding name from.</param>
+        /// <returns>The <see cref="IBindingInNamedWithOrOnSyntax{TInterface}"/> to configure more things for the binding.</returns>
+        public static IBindingInNamedWithOrOnSyntax<TInterface>
+            WhenAnyAncestorNamedLikeFactoryMethod<TInterface, TFactory>(this IBindingWhenInNamedWithOrOnSyntax<TInterface> syntax, Expression<Action<TFactory>> action)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var methodCallExpression = action.Body as MethodCallExpression;
+
+            if (methodCallExpression == null)
+            {
+                throw new ArgumentException("expected factory method instead of " + action, "action");
+            }
+
+            var methodName = methodCallExpression.Method.Name;
+
+            if (!methodName.StartsWith("Get"))
+            {
+                throw new ArgumentException("expected factory 'Get' method instead of " + action, "action");
+            }
+
+            var bindingName = methodName.Substring(3);
+
+            return syntax.WhenAnyAncestorNamed(bindingName);
+        }
+
+        /// <summary>
         /// Defines that the interface shall be bound to an automatically created factory proxy.
         /// </summary>
         /// <typeparam name="TInterface">The type of the interface.</typeparam>
