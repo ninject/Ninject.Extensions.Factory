@@ -37,15 +37,15 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="type">The type of the instance.</param>
         /// <param name="name">The name of the binding to use. If null the name is not used.</param>
         /// <param name="constraint">The constraint for the bindings. If null the constraint is not used.</param>
-        /// <param name="constructorArguments">The constructor arguments.</param>
-        /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without 
+        /// <param name="parameters">The constructor arguments.</param>
+        /// <param name="fallback">if set to <c>true</c> the request falls back to requesting instances without 
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>An instance of the specified type.</returns>
         object Get(
             Type type,
             string name,
             Func<IBindingMetadata, bool> constraint,
-            IConstructorArgument[] constructorArguments, 
+            IParameter[] parameters, 
             bool fallback);
 
         /// <summary>
@@ -54,15 +54,15 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="type">The type of the instance.</param>
         /// <param name="name">The name of the binding to use. If null the name is not used.</param>
         /// <param name="constraint">The constraint for the bindings. If null the constraint is not used.</param>
-        /// <param name="constructorArguments">The constructor arguments.</param>
-        /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without 
+        /// <param name="parameters">The constructor arguments.</param>
+        /// <param name="fallback">if set to <c>true</c> the request falls back to requesting instances without 
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>An instance of the specified type.</returns>
         object GetAllAsList(
             Type type,
             string name,
             Func<IBindingMetadata, bool> constraint,
-            IConstructorArgument[] constructorArguments,
+            IParameter[] parameters,
             bool fallback);
     
         /// <summary>
@@ -71,7 +71,7 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="type">The type of the instance.</param>
         /// <param name="name">The name of the binding to use. If null the name is not used.</param>
         /// <param name="constraint">The constraint for the bindings. If null the constraint is not used.</param>
-        /// <param name="constructorArguments">The constructor arguments.</param>
+        /// <param name="parameters">The constructor arguments.</param>
         /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without 
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>An instance of the specified type.</returns>
@@ -79,7 +79,7 @@ namespace Ninject.Extensions.Factory.Factory
             Type type,
             string name,
             Func<IBindingMetadata, bool> constraint,
-            IConstructorArgument[] constructorArguments,
+            IParameter[] parameters,
             bool fallback);
     }
 }

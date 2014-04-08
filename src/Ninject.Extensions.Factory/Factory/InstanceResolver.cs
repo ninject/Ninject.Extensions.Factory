@@ -54,29 +54,29 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="type">The type of the instance.</param>
         /// <param name="name">The name of the binding to use. If null the name is not used.</param>
         /// <param name="constraint">The constraint for the bindings. If null the constraint is not used.</param>
-        /// <param name="constructorArguments">The constructor arguments.</param>
-        /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without
+        /// <param name="parameters">The parameters that are passed to the request.</param>
+        /// <param name="fallback">if set to <c>true</c> the request falls back to requesting instances without
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>An instance of the specified type.</returns>
-        public object Get(Type type, string name, Func<IBindingMetadata, bool> constraint, IConstructorArgument[] constructorArguments, bool fallback)
+        public object Get(Type type, string name, Func<IBindingMetadata, bool> constraint, IParameter[] parameters, bool fallback)
         {
             if (fallback && constraint != null)
             {
-                return this.resolutionRoot.TryGet(type, constraint, constructorArguments) ??
-                       this.Get(type, name, null, constructorArguments, name != null);
+                return this.resolutionRoot.TryGet(type, constraint, parameters) ??
+                       this.Get(type, name, null, parameters, name != null);
             }
 
             if (fallback && name != null)
             {
-                return this.resolutionRoot.TryGet(type, name, constructorArguments) ??
-                       this.Get(type, null, null, constructorArguments, true);
+                return this.resolutionRoot.TryGet(type, name, parameters) ??
+                       this.Get(type, null, null, parameters, true);
             }
 
             return constraint == null
                        ? name == null && !fallback
-                             ? this.resolutionRoot.Get(type, constructorArguments)
-                             : this.resolutionRoot.Get(type, name, constructorArguments)
-                       : this.resolutionRoot.Get(type, constraint, constructorArguments);
+                             ? this.resolutionRoot.Get(type, parameters)
+                             : this.resolutionRoot.Get(type, name, parameters)
+                       : this.resolutionRoot.Get(type, constraint, parameters);
         }
 
         /// <summary>
@@ -85,17 +85,17 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="type">The type of the instance.</param>
         /// <param name="name">The name of the binding to use. If null the name is not used.</param>
         /// <param name="constraint">The constraint for the bindings. If null the constraint is not used.</param>
-        /// <param name="constructorArguments">The constructor arguments.</param>
-        /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without
+        /// <param name="parameters">The parameters that are passed to the request.</param>
+        /// <param name="fallback">if set to <c>true</c> the request falls back to requesting instances without
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>An instance of the specified type.</returns>
-        public object GetAllAsList(Type type, string name, Func<IBindingMetadata, bool> constraint, IConstructorArgument[] constructorArguments, bool fallback)
+        public object GetAllAsList(Type type, string name, Func<IBindingMetadata, bool> constraint, IParameter[] parameters, bool fallback)
         {
             var listType = typeof(List<>).MakeGenericType(type);
             var list = listType.GetConstructor(new Type[0]).Invoke(new object[0]);
             var addMethod = listType.GetMethod("Add");
 
-            var values = this.GetAll(type, name, constraint, constructorArguments, fallback);
+            var values = this.GetAll(type, name, constraint, parameters, fallback);
 
             foreach (var value in values)
             {
@@ -111,13 +111,13 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="type">The type of the instance.</param>
         /// <param name="name">The name of the binding to use. If null the name is not used.</param>
         /// <param name="constraint">The constraint for the bindings. If null the constraint is not used.</param>
-        /// <param name="constructorArguments">The constructor arguments.</param>
-        /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without
+        /// <param name="parameters">The parameters that are passed to the request.</param>
+        /// <param name="fallback">if set to <c>true</c> the request falls back to requesting instances without
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>An instance of the specified type.</returns>
-        public object GetAllAsArray(Type type, string name, Func<IBindingMetadata, bool> constraint, IConstructorArgument[] constructorArguments, bool fallback)
+        public object GetAllAsArray(Type type, string name, Func<IBindingMetadata, bool> constraint, IParameter[] parameters, bool fallback)
         {
-            var list = this.GetAllAsList(type, name, constraint, constructorArguments, fallback);
+            var list = this.GetAllAsList(type, name, constraint, parameters, fallback);
             return typeof(Enumerable)
                 .GetMethod("ToArray")
                 .MakeGenericMethod(type)
@@ -130,29 +130,29 @@ namespace Ninject.Extensions.Factory.Factory
         /// <param name="type">The type of the instance.</param>
         /// <param name="name">The name of the binding to use. If null the name is not used.</param>
         /// <param name="constraint">The constraint for the bindings. If null the constraint is not used.</param>
-        /// <param name="constructorArguments">The constructor arguments.</param>
-        /// <param name="fallback">if set to <c>true</c> the request fallsback to requesting instances without
+        /// <param name="parameters">The parameters that are passed to the request.</param>
+        /// <param name="fallback">if set to <c>true</c> the request falls back to requesting instances without
         /// name or constraint if no one can received otherwise.</param>
         /// <returns>All instances of the specified type.</returns>
-        private IEnumerable<object> GetAll(Type type, string name, Func<IBindingMetadata, bool> constraint, IConstructorArgument[] constructorArguments, bool fallback)
+        private IEnumerable<object> GetAll(Type type, string name, Func<IBindingMetadata, bool> constraint, IParameter[] parameters, bool fallback)
         {
             if (fallback && constraint != null)
             {
-                var result = this.resolutionRoot.GetAll(type, constraint, constructorArguments);
-                return result.Any() ? result : this.GetAll(type, name, null, constructorArguments, true);
+                var result = this.resolutionRoot.GetAll(type, constraint, parameters);
+                return result.Any() ? result : this.GetAll(type, name, null, parameters, true);
             }
 
             if (fallback && name != null)
             {
-                var result = this.resolutionRoot.GetAll(type, name, constructorArguments);
-                return result.Any() ? result : this.GetAll(type, null, null, constructorArguments, true);
+                var result = this.resolutionRoot.GetAll(type, name, parameters);
+                return result.Any() ? result : this.GetAll(type, null, null, parameters, true);
             }
 
             return constraint == null
                        ? name == null
-                             ? this.resolutionRoot.GetAll(type, constructorArguments)
-                             : this.resolutionRoot.GetAll(type, name, constructorArguments)
-                       : this.resolutionRoot.GetAll(type, constraint, constructorArguments);
+                             ? this.resolutionRoot.GetAll(type, parameters)
+                             : this.resolutionRoot.GetAll(type, name, parameters)
+                       : this.resolutionRoot.GetAll(type, constraint, parameters);
         }
     }
 }
