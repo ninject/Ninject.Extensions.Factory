@@ -128,7 +128,7 @@ namespace Ninject.Extensions.Factory
 
         /// <summary>
         /// Defines a conditional binding that is used when any ancestor was created over the specified GetXYZ factory method.
-        /// <seealso cref="NamedLikeFactoryMethod"/>
+        /// <seealso cref="NamedLikeFactoryMethod{TInterface,TFactory}"/>
         /// </summary>
         /// <typeparam name="TInterface">The type of the interface.</typeparam>
         /// <typeparam name="TFactory">The type of the factory.</typeparam>
