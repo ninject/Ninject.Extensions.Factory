@@ -1,9 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Factory", "src\Ninject.Extensions.Factory\Ninject.Extensions.Factory.csproj", "{9831975F-FA35-4B8B-A545-1A06852625BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Factory.Test", "src\Ninject.Extensions.Factory.Test\Ninject.Extensions.Factory.Test.csproj", "{EB0A05EF-2630-4F8B-92D8-6763509C0D80}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{775AD438-B461-45A5-A890-E5F5F1EBD8D7}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		ReleaseNotes.md = ReleaseNotes.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
