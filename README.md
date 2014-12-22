@@ -1,6 +1,6 @@
 # Ninject.Extensions.Factory [![NuGet Version](http://img.shields.io/nuget/v/Ninject.Extensions.Factory.svg?style=flat)](https://www.nuget.org/packages/Ninject.Extensions.Factory/) [![NuGet Downloads](http://img.shields.io/nuget/dt/Ninject.Extensions.Factory.svg?style=flat)](https://www.nuget.org/packages/Ninject.Extensions.Factory/)
 
-Create factory implementations automatically.
+This Ninject extension allows to create factory implementations automatically.
 
 ## Documentation
 
