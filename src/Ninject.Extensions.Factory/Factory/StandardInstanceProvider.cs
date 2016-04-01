@@ -125,7 +125,7 @@ namespace Ninject.Extensions.Factory
             var constructorArguments = new ConstructorArgument[parameters.Length];
             for (int i = 0; i < parameters.Length; i++)
             {
-                constructorArguments[i] = new ConstructorArgument(parameters[i].Name, arguments[i]);
+                constructorArguments[i] = new ConstructorArgument(parameters[i].Name, arguments[i], true);
             }
 
             return constructorArguments;

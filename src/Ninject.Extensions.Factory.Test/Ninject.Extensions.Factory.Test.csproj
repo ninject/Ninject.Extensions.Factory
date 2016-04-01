@@ -95,6 +95,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Fakes\Barrack.cs" />
+    <Compile Include="Fakes\DecoratedCustomizableWeapon.cs" />
+    <Compile Include="Fakes\DecoratedWeapon.cs" />
     <Compile Include="Fakes\IBarrackFactory.cs" />
     <Compile Include="Fakes\ClassWithCollectionFunc.cs" />
     <Compile Include="Fakes\ClassWithLazy.cs" />
