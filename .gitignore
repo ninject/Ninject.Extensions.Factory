@@ -1,20 +1,5 @@
-/build/*
-/dist/*
+bin
 obj
-/src/Ninject.Extensions.Factory.5.0.ReSharper.user
-/src/Ninject.Extensions.Factory.5.1.TeamCity.user
-_ReSharper.Ninject.Extensions.Factory
-_ReSharper.Ninject.Extensions.Factory with Silverlight and WP7 Unittesting
-/src/Ninject.Extensions.Factory/obj/*
-/src/Ninject.Extensions.Factory.Test/obj/*
-/src/_ReSharper.Ninject.Extensions.Factory/*
-/src/Ninject.Extensions.Factory.Test/Ninject.Extensions.Factory.Test.csproj.user
-/src/Ninject.Extensions.Factory/Ninject.Extensions.Factory.csproj.user
-/lib/Ninject/*.zip
-/lib/Ninject/*/**
-/src/Ninject.Extensions.Factory.SilverlightTests/Bin
-/src/Ninject.Extensions.Factory.SilverlightTests/obj
-*.user
 *.suo
-*.dotCover
-/src/Ninject.Extensions.Factory.SilverlightTests/Ninject.Extensions.Factory.SilverlightTests.csproj.user
+*.user
+.vs/

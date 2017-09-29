@@ -1,23 +1,9 @@
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // <copyright file="StandardInstanceProvider.cs" company="Ninject Project Contributors">
-//   Copyright (c) 2009-2011 Ninject Project Contributors
-//   Authors: Remo Gloor (remo.gloor@gmail.com)
-//           
+//   Copyright (c) 2009-2017 Ninject Project Contributors
 //   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-//   you may not use this file except in compliance with one of the Licenses.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//   or
-//       http://www.microsoft.com/opensource/licenses.mspx
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
 // </copyright>
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Factory
 {
@@ -35,10 +21,10 @@ namespace Ninject.Extensions.Factory
     public class StandardInstanceProvider : IInstanceProvider
     {
         /// <summary>
-        /// Gets or sets a value indicating whether this instance falls back to requesting instances without 
+        /// Gets or sets a value indicating whether this instance falls back to requesting instances without
         /// name or constraint if none can be received otherwise.
         /// </summary>
-        /// <value><c>true</c> if this instance shall fall back to requesting instances without 
+        /// <value><c>true</c> if this instance shall fall back to requesting instances without
         /// name or constraint if none can be received otherwise, otherwise false.</value>
         public bool Fallback { get; set; }
 
@@ -59,9 +45,9 @@ namespace Ninject.Extensions.Factory
             if (type.IsGenericType)
             {
                 var genericType = type.GetGenericTypeDefinition();
-                if (genericType == typeof(IEnumerable<>) || 
-                    genericType == typeof(ICollection<>) || 
-                    genericType == typeof(IList<>) || 
+                if (genericType == typeof(IEnumerable<>) ||
+                    genericType == typeof(ICollection<>) ||
+                    genericType == typeof(IList<>) ||
                     genericType == typeof(List<>))
                 {
                     var argumentType = type.GetGenericArguments()[0];
@@ -101,12 +87,12 @@ namespace Ninject.Extensions.Factory
         }
 
         /// <summary>
-        /// Gets the name that shall be used to request an instance for the specified method and arguments. 
+        /// Gets the name that shall be used to request an instance for the specified method and arguments.
         /// Null if unnamed instances shall be requested.
         /// </summary>
         /// <param name="methodInfo">The method info of the method that was called on the factory.</param>
         /// <param name="arguments">The arguments that were passed to the factory.</param>
-        /// <returns>The name that shall be used to request an instance for the specified method and arguments. 
+        /// <returns>The name that shall be used to request an instance for the specified method and arguments.
         /// Null if unnamed instances shall be requested.</returns>
         protected virtual string GetName(MethodInfo methodInfo, object[] arguments)
         {

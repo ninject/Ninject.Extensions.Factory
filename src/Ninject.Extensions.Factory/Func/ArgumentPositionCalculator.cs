@@ -1,23 +1,9 @@
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // <copyright file="ArgumentPositionCalculator.cs" company="Ninject Project Contributors">
-//   Copyright (c) 2009-2011 Ninject Project Contributors
-//   Authors: Remo Gloor (remo.gloor@gmail.com)
-//           
+//   Copyright (c) 2009-2017 Ninject Project Contributors
 //   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-//   you may not use this file except in compliance with one of the Licenses.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//   or
-//       http://www.microsoft.com/opensource/licenses.mspx
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
 // </copyright>
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Factory
 {
@@ -42,7 +28,7 @@ namespace Ninject.Extensions.Factory
         /// <param name="target">The target.</param>
         /// <returns>
         ///     -1 if the parameter does not exist in the context or if another constructor argument applies for the target.
-        ///     Otherwise the position of the specified <see cref="FuncConstructorArgument"/> within the other <see cref="FuncConstructorArgument"/> 
+        ///     Otherwise the position of the specified <see cref="FuncConstructorArgument"/> within the other <see cref="FuncConstructorArgument"/>
         ///     of the same type contained in context.Parameters.
         /// </returns>
         public int GetPositionOfFuncConstructorArgument(FuncConstructorArgument argument, IContext context, ITarget target)
@@ -51,8 +37,7 @@ namespace Ninject.Extensions.Factory
             int position = -1;
             foreach (var constructorArgumentParameter in context.Parameters.OfType<IConstructorArgument>())
             {
-                var funcArgumentParameter = constructorArgumentParameter as FuncConstructorArgument;
-                if (funcArgumentParameter != null)
+                if (constructorArgumentParameter is FuncConstructorArgument funcArgumentParameter)
                 {
                     if (ReferenceEquals(argument, funcArgumentParameter))
                     {
@@ -123,6 +108,6 @@ namespace Ninject.Extensions.Factory
                 .Parameters
                 .OfType<IConstructorArgument>()
                 .Any(p => !(p is FuncConstructorArgument) && p.AppliesToTarget(context, target));
-        } 
+        }
     }
 }

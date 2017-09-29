@@ -1,23 +1,9 @@
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // <copyright file="FunctionFactory.cs" company="Ninject Project Contributors">
-//   Copyright (c) 2009-2011 Ninject Project Contributors
-//   Authors: Remo Gloor (remo.gloor@gmail.com)
-//           
+//   Copyright (c) 2009-2017 Ninject Project Contributors
 //   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-//   you may not use this file except in compliance with one of the Licenses.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//   or
-//       http://www.microsoft.com/opensource/licenses.mspx
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
 // </copyright>
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Factory
 {
@@ -58,17 +44,16 @@ namespace Ninject.Extensions.Factory
         {
             return this.methodInfos.Single(mi => mi.GetGenericArguments().Length == genericArgumentCount);
         }
-        
+
         /// <summary>
-        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root. 
+        /// Creates a new Func that creates a new <typeparamref name="TService"/> instance using the specified resolution root.
         /// </summary>
         /// <typeparam name="TService">The type of the created service.</typeparam>
         /// <param name="resolutionRoot">The resolution root.</param>
         /// <returns>The new instance of <typeparamref name="TService"/> created using the resolution root.</returns>
         public Func<TService> Create<TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return () => Get(resolutionRoot, convertFunction, type);
         }
 
@@ -83,8 +68,7 @@ namespace Ninject.Extensions.Factory
         /// </returns>
         public Func<TArg1, TService> Create<TArg1, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return arg1 => Get(
                 resolutionRoot,
                 convertFunction,
@@ -104,8 +88,7 @@ namespace Ninject.Extensions.Factory
         /// </returns>
         public Func<TArg1, TArg2, TService> Create<TArg1, TArg2, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2) => Get(
                 resolutionRoot,
                 convertFunction,
@@ -127,8 +110,7 @@ namespace Ninject.Extensions.Factory
         /// </returns>
         public Func<TArg1, TArg2, TArg3, TService> Create<TArg1, TArg2, TArg3, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3) => Get(
                 resolutionRoot,
                 convertFunction,
@@ -153,8 +135,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4) =>
                    Get(
                        resolutionRoot,
@@ -183,8 +164,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5) =>
                    Get(
                        resolutionRoot,
@@ -214,8 +194,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6) =>
                    Get(
                        resolutionRoot,
@@ -247,8 +226,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) =>
                    Get(
                        resolutionRoot,
@@ -282,8 +260,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) =>
                    Get(
                        resolutionRoot,
@@ -319,8 +296,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =>
                    Get(
                        resolutionRoot,
@@ -358,8 +334,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) =>
                    Get(
                        resolutionRoot,
@@ -399,8 +374,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11) =>
                    Get(
                        resolutionRoot,
@@ -442,8 +416,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12) =>
                    Get(
                        resolutionRoot,
@@ -487,8 +460,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13) =>
                    Get(
                        resolutionRoot,
@@ -534,8 +506,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) =>
                    Get(
                        resolutionRoot,
@@ -583,8 +554,7 @@ namespace Ninject.Extensions.Factory
         public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
             return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) =>
                    Get(
                        resolutionRoot,
@@ -631,12 +601,11 @@ namespace Ninject.Extensions.Factory
         /// <returns>
         /// The new instance of <typeparamref name="TService"/> created using the resolution root.
         /// </returns>
-        public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TArg16, TService> 
+        public Func<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TArg16, TService>
             Create<TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TArg16, TService>(IResolutionRoot resolutionRoot)
         {
-            Type type;
-            var convertFunction = GetConvertionFunction<TService>(out type);
-            return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16) => 
+            var convertFunction = GetConvertionFunction<TService>(out Type type);
+            return (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16) =>
                    Get(
                        resolutionRoot,
                        convertFunction,
@@ -670,7 +639,7 @@ namespace Ninject.Extensions.Factory
         /// <param name="parameters">The parameters.</param>
         /// <returns>The newly created instance.</returns>
         private static TService Get<TService>(
-            IResolutionRoot resolutionRoot, 
+            IResolutionRoot resolutionRoot,
             Func<IEnumerable<object>, TService> convertFunction,
             Type type,
             params IParameter[] parameters)

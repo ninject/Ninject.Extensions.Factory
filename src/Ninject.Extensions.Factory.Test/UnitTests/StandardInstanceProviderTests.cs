@@ -141,29 +141,29 @@ namespace Ninject.Extensions.Factory.UnitTests
                 MethodInfo methodInfo, 
                 object[] arguments)
             {
-                methodInfo.Should().Be(this.ExpectedMethodInfo);
-                ((object)arguments).Should().BeSameAs(this.expectedArguments);
+                methodInfo.Should().BeSameAs(this.ExpectedMethodInfo);
+                arguments.Should().BeSameAs(this.expectedArguments);
                 return this.constraint;
             }
 
             protected override string GetName(MethodInfo methodInfo, object[] arguments)
             {
-                methodInfo.Should().Be(this.ExpectedMethodInfo);
-                ((object)arguments).Should().BeSameAs(this.expectedArguments);
+                methodInfo.Should().BeSameAs(this.ExpectedMethodInfo);
+                arguments.Should().BeSameAs(this.expectedArguments);
                 return this.name;
             }
 
             protected override Type GetType(MethodInfo methodInfo, object[] arguments)
             {
-                methodInfo.Should().Be(this.ExpectedMethodInfo);
-                ((object)arguments).Should().BeSameAs(this.expectedArguments);
+                methodInfo.Should().BeSameAs(this.ExpectedMethodInfo);
+                arguments.Should().BeSameAs(this.expectedArguments);
                 return this.ReturnedType;
             }
 
             protected override IConstructorArgument[] GetConstructorArguments(MethodInfo methodInfo, object[] arguments)
             {
-                methodInfo.Should().Be(this.ExpectedMethodInfo);
-                ((object)arguments).Should().BeSameAs(this.expectedArguments);
+                methodInfo.Should().BeSameAs(this.ExpectedMethodInfo);
+                arguments.Should().BeSameAs(this.expectedArguments);
                 return this.constructorArguments;
             }
         }
