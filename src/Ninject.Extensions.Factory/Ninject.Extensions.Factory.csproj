@@ -18,7 +18,7 @@
     <PackageProjectUrl>http://www.ninject.org/</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/ninject/Ninject.Extensions.Factory/blob/master/CHANGELOG.md</PackageReleaseNotes>
     <PackageIconUrl>https://github.com/ninject/ninject/raw/master/logos/Ninject-Logo32.png</PackageIconUrl>
-    <PackageLicenseUrl>https://github.com/ninject/ninject.extensions.interception/raw/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/ninject/Ninject.Extensions.Factory/raw/master/LICENSE.txt</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/ninject/Ninject.Extensions.Factory</RepositoryUrl>

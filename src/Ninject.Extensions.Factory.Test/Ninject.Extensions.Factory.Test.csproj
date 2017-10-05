@@ -26,8 +26,4 @@
     <ProjectReference Include="..\Ninject.Extensions.Factory\Ninject.Extensions.Factory.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.ServiceModel" />
-  </ItemGroup>
-
 </Project>
