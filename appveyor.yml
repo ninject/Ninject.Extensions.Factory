@@ -22,7 +22,7 @@ dotnet_csproj:
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
-  - '%LocalAppData%\NuGet\v3-cache'
+  - '%LocalAppData%\NuGet\v3-cache -> **\*.csproj'
 
 before_build:
   - nuget restore -Verbosity quiet
