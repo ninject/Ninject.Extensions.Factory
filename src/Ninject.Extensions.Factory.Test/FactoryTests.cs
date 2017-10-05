@@ -305,6 +305,42 @@ namespace Ninject.Extensions.Factory
             handlers.Single().Should().BeOfType<IntMessageHandler>();
         }
 
+        [Fact]
+        public void DecoratorShouldBeInjectedWithAppropriateBinding()
+        {
+            this.kernel.Bind<IWeapon>().To<DecoratedWeapon>();
+            this.kernel.Bind<IWeapon>().To<Sword>().WhenInjectedExactlyInto<DecoratedWeapon>();
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+
+            var instance = this.kernel.Get<IWeaponFactory>().CreateWeapon();
+            var decoratedWeapon = instance as DecoratedWeapon;
+
+            instance.Should().BeOfType<DecoratedWeapon>();
+            decoratedWeapon.WeaponToBeDecorated.Should().BeOfType<Sword>();
+
+        }
+
+        [Fact]
+        public void DecoratorShouldBeInjectedWithAppropriateBindingWithArguments()
+        {
+            const string Name = "Excalibur";
+            const int Width = 34;
+            const int Length = 123;
+
+            this.kernel.Bind<ICustomizableWeapon>().To<DecoratedCustomizableWeapon>();
+            this.kernel.Bind<ICustomizableWeapon>().To<CustomizableSword>().WhenInjectedExactlyInto<DecoratedCustomizableWeapon>();
+            this.kernel.Bind<IWeaponFactory>().ToFactory();
+
+            var weapon = this.kernel.Get<IWeaponFactory>().CreateCustomizableWeapon(Length, Name, Width);
+            var decoratedWeapon = weapon as DecoratedCustomizableWeapon;
+
+            weapon.Should().BeOfType<DecoratedCustomizableWeapon>();
+            decoratedWeapon.WeaponToBeDecorated.Should().BeOfType<CustomizableSword>();
+            weapon.Name.Should().Be(Name);
+            weapon.Length.Should().Be(Length);
+            weapon.Width.Should().Be(Width);
+        }
+
         private class CustomInstanceProvider : StandardInstanceProvider
         {
             protected override string GetName(System.Reflection.MethodInfo methodInfo, object[] arguments)
