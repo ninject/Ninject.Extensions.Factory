@@ -17,6 +17,7 @@ namespace Ninject.Extensions.Factory
 
     using Ninject.Activation;
     using Ninject.Modules;
+    using Ninject.Selection.Heuristics;
     using Ninject.Syntax;
 
     /// <summary>
@@ -41,6 +42,9 @@ namespace Ninject.Extensions.Factory
             this.Bind<IInterceptor>().To<FactoryInterceptor>()
                 .When(request => typeof(IFactoryProxy).IsAssignableFrom(request.Target.Member.ReflectedType));
 #endif
+
+            this.Kernel.Components.Remove<IConstructorScorer, StandardConstructorScorer>();
+            this.Kernel.Components.Add<IConstructorScorer, LazyConstructorScorer>();
 
             this.Bind(typeof(Func<>)).ToProvider<FuncProvider>();
             this.Bind(typeof(Func<,>)).ToProvider<FuncProvider>();

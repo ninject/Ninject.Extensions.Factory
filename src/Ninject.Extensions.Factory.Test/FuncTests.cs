@@ -39,9 +39,6 @@ namespace Ninject.Extensions.Factory
         public FuncTests()
         {
             this.kernel = new StandardKernel();
-#if NO_ASSEMBLY_SCANNING
-            this.kernel.Load(new FuncModule());
-#endif
         }
 
         public void Dispose()
