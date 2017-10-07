@@ -34,8 +34,7 @@ build:
   verbosity: minimal
 
 test_script:
-  - cd src\Ninject.Extensions.Factory.Test
-  - OpenCover.Console.exe -oldstyle -returntargetcode -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --configuration Release --no-build" -filter:"+[Ninject.Extensions.Factory]*" -excludebyattribute:*.ExcludeFromCodeCoverage*;*.Obsolete* -output:".\Ninject.Extensions.Factory_coverage.xml"
+  - OpenCover.Console.exe -oldstyle -returntargetcode -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --configuration Release --no-build src\Ninject.Extensions.Factory.Test" -filter:"+[Ninject.Extensions.Factory]*" -excludebyattribute:*.ExcludeFromCodeCoverage*;*.Obsolete* -output:".\Ninject.Extensions.Factory_coverage.xml"
   - codecov -f "Ninject.Extensions.Factory_coverage.xml"
 
 artifacts:
