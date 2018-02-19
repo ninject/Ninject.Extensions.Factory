@@ -46,12 +46,30 @@ namespace Ninject.Extensions.Factory
                 if (directive.Constructor.GetParameters().Length == 1 &&
                     directive.Constructor.GetParameters()[0].ParameterType.IsGenericType)
                 {
-                    return 1;
+                    var parameterGenericType = directive.Constructor.GetParameters()[0].ParameterType.GetGenericTypeDefinition();
+                    if (parameterGenericType == typeof(Func<>)
+                        || parameterGenericType == typeof(Func<,>)
+                        || parameterGenericType == typeof(Func<,,>)
+                        || parameterGenericType == typeof(Func<,,,>)
+                        || parameterGenericType == typeof(Func<,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,,,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,,,,,,,,,>)
+                        || parameterGenericType == typeof(Func<,,,,,,,,,,,,,,,,>))
+                    {
+                        return 1;
+                    }
                 }
-                else
-                {
-                    return 0;
-                }
+
+                return 0;
             }
             else
             {

@@ -201,6 +201,20 @@ namespace Ninject.Extensions.Factory
             weapon2.Should().BeOfType<Sword>();
             weapon1.Should().BeSameAs(weapon2);
         }
+
+        [Fact]
+        public void GenericLazyInjection()
+        {
+            this.kernel.Bind<IWeapon>().To<Sword>();
+
+            var service = this.kernel.Get<ClassWithGenericLazy>();
+            var weapon1 = service.GetWeapon();
+            var weapon2 = service.GetWeapon();
+
+            weapon1.Should().BeOfType<Sword>();
+            weapon2.Should().BeOfType<Sword>();
+            weapon1.Should().BeSameAs(weapon2);
+        }
 #endif
 
         [Theory]
