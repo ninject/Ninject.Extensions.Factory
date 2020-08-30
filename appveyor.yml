@@ -1,6 +1,6 @@
 configuration: Release
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 init:
   - ps: >-
@@ -20,22 +20,21 @@ dotnet_csproj:
   package_version: '{version}'
 
 cache:
-  - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  - C:\ProgramData\chocolatey\lib -> appveyor.yml
   - '%LocalAppData%\NuGet\v3-cache -> **\*.csproj'
 
 before_build:
   - dotnet restore --verbosity quiet
-  - choco install opencover.portable
-  - choco install codecov
 
 build:
   parallel: true
   verbosity: minimal
 
 test_script:
-  - OpenCover.Console.exe -oldstyle -returntargetcode -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --configuration Release --no-build src\Ninject.Extensions.Factory.Test" -filter:"+[Ninject.Extensions.Factory]*" -excludebyattribute:*.ExcludeFromCodeCoverage*;*.Obsolete* -output:".\Ninject.Extensions.Factory_coverage.xml"
-  - codecov -f "Ninject.Extensions.Factory_coverage.xml"
+  - dotnet test --configuration Release --no-build --collect="Code Coverage" src\Ninject.Extensions.Factory.Test
+  - nuget install Microsoft.CodeCoverage -x -Verbosity quiet
+  - for /f %%G in ('dir /b /s *.coverage') do Microsoft.CodeCoverage\build\netstandard1.0\CodeCoverage\CodeCoverage analyze /output:%%~dpnG.coveragexml "%%G"
+  - nuget install Codecov -x -Verbosity quiet
+  - for /f %%G in ('dir /b /s *.coveragexml') do Codecov\tools\codecov -f "%%G"
 
 artifacts:
   - path: '**\*.nupkg'
@@ -43,6 +42,6 @@ artifacts:
 deploy:
   provider: NuGet
   api_key:
-    secure: Sn05A/FiUAlID5v31uaf5EZuYCSo4frLONtrCY+cwY265dU2JUZsl2+sjVeLQyz/
+    secure: ObZpjlJ2soInYT4Ooi+u2KeQQ1LRsBbRA9uPU7ctOma7CZxxNN8hPUVjwFUY2wS1
   on:
     appveyor_repo_tag: true
