@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ninject.Extensions.Factory", "src\Ninject.Extensions.Factory\Ninject.Extensions.Factory.csproj", "{9831975F-FA35-4B8B-A545-1A06852625BB}"
 EndProject
@@ -11,7 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
 		CHANGELOG.md = CHANGELOG.md
+		src\Directory.Build.props = src\Directory.Build.props
 		README.md = README.md
+		version.json = version.json
 	EndProjectSection
 EndProject
 Global

@@ -2,23 +2,6 @@ configuration: Release
 
 image: Visual Studio 2019
 
-init:
-  - ps: >-
-      if ($env:APPVEYOR_REPO_TAG -eq "true")
-      {
-          Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
-      }
-      else
-      {
-          Update-AppveyorBuild -Version "3.3.0-ci.$($env:APPVEYOR_BUILD_NUMBER)+sha.$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
-      }
-
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-
 cache:
   - '%LocalAppData%\NuGet\v3-cache -> **\*.csproj'
 
@@ -42,6 +25,6 @@ artifacts:
 deploy:
   provider: NuGet
   api_key:
-    secure: ObZpjlJ2soInYT4Ooi+u2KeQQ1LRsBbRA9uPU7ctOma7CZxxNN8hPUVjwFUY2wS1
+    secure: sWL/NJKz8FlteNgBJjK4mGnc5RUtQ/kwfI39IpnUDUBsO6oUR3M/6yoSYatiCiaG
   on:
     appveyor_repo_tag: true

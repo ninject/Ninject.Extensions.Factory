@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Version>0.0.0</Version>
     <Authors>Ninject Project Contributors</Authors>
     <Company>Ninject Project Contributors</Company>
     <Product>Factory extension for Ninject</Product>
@@ -13,7 +12,6 @@
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Ninject.Extensions.Factory</PackageId>
-    <PackageVersion>0.0.0</PackageVersion>
     <PackageTags>Ninject;ioc;di;factory</PackageTags>
     <PackageProjectUrl>http://www.ninject.org/</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/ninject/Ninject.Extensions.Factory/blob/master/CHANGELOG.md</PackageReleaseNotes>
